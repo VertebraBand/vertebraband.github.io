@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vertebra - parole tristi in canzoni distorte</title>
+
+  <style>
+    :root{
+      --bg:#050505;
+      --panel:#0b0b0b;
+      --text:#e9e9e9;
+      --muted:#a8a8a8;
+      --accent:#7cffd0;
+      --accent2:#ff4fd8;
+      --border:rgba(255,255,255,.12);
+      --shadow: 0 18px 60px rgba(0,0,0,.6);
+      --radius: 18px;
+    }
+
+    /* =========================
+       INTRO TV ASSETS (NEW)
+       ========================= */
+    .tv-base,
+    .tv-static{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit: contain;   /* keeps whole TV visible */
+      display:block;
+    }
+
+    .tv-static{
+      opacity: 1;            /* starts fully visible */
+      transition: opacity 120ms linear;
+      pointer-events:none;
+    }
+
+    /* --- Global --- */
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+    }
+    a{ color:inherit; }
+    .sr-only{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;
+    }
+
+    /* --- Subtle texture (Page 2) --- */
+    .texture{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(800px 500px at 15% 20%, rgba(124,255,208,.09), transparent 55%),
+        radial-gradient(700px 450px at 80% 25%, rgba(255,79,216,.08), transparent 60%),
+        radial-gradient(900px 700px at 55% 90%, rgba(255,255,255,.04), transparent 60%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 1px, transparent 1px 3px);
+      pointer-events:none;
+      opacity:.85;
+      filter: contrast(115%);
+    }
+
+    /* --- Page Wrapper --- */
+    .page{
+      min-height:100vh;
+      display:none;
+      position:relative;
+    }
+    .page.active{ display:block; }
+
+    /* =========================================================
+       PAGE 1: Splash / Loading
+       ========================================================= */
+    #page1{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: clamp(18px, 3vw, 40px);
+      background:#000;
+    }
+
+    /* Center the beginning elements (TV + everything) */
+    .splash-wrap{
+      width:min(980px, 100%);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    /* TV composition */
+    .tv-stage{
+      position:relative;
+      width:min(720px, 100%);
+      padding: clamp(14px, 2.2vw, 24px);
+      border-radius: calc(var(--radius) + 8px);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .tv-stage::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(900px 320px at 20% 0%, rgba(255,255,255,.06), transparent 55%),
+        radial-gradient(700px 240px at 90% 10%, rgba(255,79,216,.06), transparent 55%),
+        radial-gradient(700px 280px at 20% 100%, rgba(124,255,208,.06), transparent 60%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px 8px);
+      opacity:.9;
+      pointer-events:none;
+    }
+
+    .tv{
+      position:relative;
+      border-radius: 26px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.15);
+      box-shadow: 0 12px 30px rgba(0,0,0,.55);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      cursor:pointer;
+    }
+
+    .tv:hover{
+      transform: translateY(-2px) scale(1.01);
+      border-color: rgba(124,255,208,.55);
+      box-shadow: 0 18px 48px rgba(0,0,0,.65), 0 0 0 2px rgba(124,255,208,.12);
+    }
+
+    .tv:focus-visible{
+      outline:none;
+      box-shadow: 0 0 0 3px rgba(124,255,208,.35), 0 18px 48px rgba(0,0,0,.65);
+    }
+
+    .tv-frame{
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .screen{
+      position:relative;
+      border-radius: 14px;
+      background:#000;
+      aspect-ratio: 16/9;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* Loading HUD */
+    .hud{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding-top: 14px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .progress{
+      flex:1;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      overflow:hidden;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(124,255,208,.95), rgba(255,79,216,.9));
+      transition: width .12s linear;
+    }
+    .pct{
+      min-width: 56px;
+      text-align:right;
+      font-variant-numeric: tabular-nums;
+      color: rgba(255,255,255,.82);
+    }
+
+    /* =========================================================
+       PAGE 2: One-page Website
+       ========================================================= */
+    #page2{
+      padding: clamp(18px, 3vw, 42px);
+    }
+
+    .container{
+      position:relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+
+    /* Banner / logo */
+    .banner{
+      position: relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 16px 18px;
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 12px 34px rgba(0,0,0,.5);
+      backdrop-filter: blur(8px);
+    }
+
+    /* (kept from your file — note you have duplicate .logo rules; leaving as-is) */
+    .logo{
+      height:80px;
+      width:100%;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+    }
+    .logo-img{
+      max-height:100%;
+      max-width:100%;
+      width:auto;
+      height:auto;
+      object-fit:contain;
+      filter: drop-shadow(0 0 12px rgba(255,255,255,.12));
+    }
+
+    .tag{
+      color: rgba(255,255,255,.7);
+      font-size: 13px;
+      letter-spacing:.04em;
+      text-align:center;
+    }
+
+    /* Main grid */
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items:start;
+    }
+
+    .col{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      min-width:0;
+    }
+/* Pair two cards so they line up perfectly (Ascolta + Spotify) */
+.pair-row{
+  grid-column: 1 / -1;           /* spans across both grid columns */
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:18px;
+  align-items: stretch;          /* forces equal height */
+}
+
+@media (max-width: 900px){
+  .pair-row{ grid-template-columns: 1fr; }
+}
+    .card{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 12px 34px rgba(0,0,0,.5);
+      overflow:hidden;
+      position:relative;
+    }
+    .card .inner{
+      padding: 16px;
+    }
+    .card h2{
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.86);
+    }
+    .muted{
+      color: rgba(255,255,255,.72);
+      line-height: 1.6;
+    }
+
+    /* Bio glitch */
+    .bio-text{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 14.5px;
+      letter-spacing:.02em;
+    }
+    .bio-text .glitch{
+      position:relative;
+      display:inline-block;
+      color: rgba(255,255,255,.92);
+      font-size: 20px;
+    }
+    .bio-text .glitch::before,
+    .bio-text .glitch::after{
+      content: attr(data-text);
+      position:absolute;
+      left:0;
+      top:0;
+      opacity:.7;
+      pointer-events:none;
+    }
+    .bio-text .glitch::before{
+      transform: translate(1px, -1px);
+      color: var(--accent);
+      mix-blend-mode: screen;
+      clip-path: inset(0 0 55% 0);
+    }
+    .bio-text .glitch::after{
+      transform: translate(-1px, 1px);
+      color: var(--accent2);
+      mix-blend-mode: screen;
+      clip-path: inset(45% 0 0 0);
+    }
+
+    /* CTA */
+    .cta{
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,79,216,.22);
+      background: rgba(255,79,216,.07);
+    }
+    .cta strong{
+      display:block;
+      letter-spacing:.06em;
+      text-transform: uppercase;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: rgba(255,255,255,.9);
+    }
+    .cta a{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      margin-top: 8px;
+      text-decoration:none;
+      font-weight: 700;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(124,255,208,.35);
+      background: rgba(124,255,208,.09);
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .cta a:hover{
+      transform: translateY(-1px);
+      border-color: rgba(124,255,208,.55);
+      box-shadow: 0 10px 22px rgba(0,0,0,.45);
+    }
+
+    /* Embedded player placeholder */
+    .player{
+      border-radius: 14px;
+      border:1px dashed rgba(255,255,255,.22);
+      background: rgba(0,0,0,.35);
+      padding: 14px;
+      min-height: 120px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color: rgba(255,255,255,.7);
+    }
+
+    /* EP stack */
+    .ep{
+      display:grid;
+      grid-template-columns: auto 1fr;
+      gap:20px;
+      align-items:center;
+    }
+    .ep-text{ min-width:0; }
+
+    .cover{
+  width:180px;
+  min-width:180px;
+  aspect-ratio: 1 / 1;
+  overflow:hidden;
+  padding:10px;                 /* ← RESTORED BUFFER SPACE */
+  border-radius:12px;
+  border:1px dashed rgba(255,255,255,.22);
+  background: rgba(0,0,0,.35);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+    .cover-img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      border-radius:16px;
+    }
+
+    .ep a{
+      text-decoration:none;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      margin-top: 10px;
+      font-weight: 800;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .ep a:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.35);
+      background: rgba(255,255,255,.08);
+    }
+
+    /* Band photo + slideshow */
+    .photo{
+  padding:18px;
+  overflow:hidden;
+  border-radius:16px;
+
+  border:1px dashed rgba(255,255,255,.22);
+  background: rgba(0,0,0,.35);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+    .photo-img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      border-radius:12px;
+    }
+
+    .slideshow{ margin-top: 18px; }
+
+    .slide-stage{
+      position:relative;
+      border-radius: 16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      min-height: clamp(300px, 45vh, 460px);
+    }
+    .slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition: opacity .5s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+    }
+    .slide.active{ opacity:1; }
+
+    .slide-img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      border-radius:16px;
+    }
+
+    .slide-controls{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 10px 2px 0;
+      color: rgba(255,255,255,.7);
+      font-size: 13px;
+    }
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.86);
+      padding: 9px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.32);
+      background: rgba(255,255,255,.08);
+    }
+
+    /* Custom player (kept from your file) */
+    .custom-player{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      background: rgba(0,0,0,.35);
+      box-shadow: 0 12px 34px rgba(0,0,0,.5);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .cp-now{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      margin-bottom: 10px;
+    }
+
+    .cp-title{
+      font-weight:900;
+      letter-spacing:.04em;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 16px;
+      color: rgba(255,255,255,.95);
+    }
+
+    .cp-meta{
+      font-family: "Courier New", Courier, monospace;
+      color: rgba(255,255,255,.55);
+      font-size: 13px;
+    }
+
+    .cp-controls{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:10px;
+    }
+
+    .cp-btn{
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.9);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+    }
+
+    .cp-play{
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1;
+      min-width: 56px;
+      text-align:center;
+    }
+
+    .cp-time{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:1;
+      min-width: 240px;
+      color: rgba(255,255,255,.7);
+      font-size: 13px;
+    }
+    #cpSeek{ width:100%; }
+
+    .cp-list{
+      margin-top: 12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .cp-track{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+    }
+    .cp-track:hover{ border-color: rgba(255,255,255,.22); }
+    .cp-track.active{
+      border-color: rgba(124,255,208,.45);
+      background: rgba(124,255,208,.08);
+    }
+    .cp-track small{ color: rgba(255,255,255,.6); }
+
+    /* Glitch ONLY for the playing track */
+    .custom-player .glitch{
+      position: relative;
+      display: inline-block;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: rgba(255,255,255,.95);
+    }
+    .custom-player .glitch::before,
+    .custom-player .glitch::after{
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: .7;
+      pointer-events: none;
+    }
+    .custom-player .glitch::before{
+      transform: translate(1px, -1px);
+      color: var(--accent);
+      clip-path: inset(0 0 55% 0);
+    }
+    .custom-player .glitch::after{
+      transform: translate(-1px, 1px);
+      color: var(--accent2);
+      clip-path: inset(45% 0 0 0);
+    }
+
+    /* Footer */
+    .footer{
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 12px 34px rgba(0,0,0,.5);
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .small{
+      color: rgba(255,255,255,.6);
+      font-size: 12.5px;
+      letter-spacing:.02em;
+    }
+
+    /* Social Icons */
+    .social-icons{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      gap:28px;
+      align-items:center;
+    }
+    .social-icons a{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:70px;
+      height:70px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .social-icons img{
+      height:50px;
+      width:auto;
+      display:block;
+      image-rendering:auto;
+    }
+    .social-icons a:hover{
+      transform: translateY(-2px);
+      border-color: rgba(124,255,208,.45);
+      background: rgba(124,255,208,.06);
+    }
+    .social-icons a:hover img{
+      filter:
+        drop-shadow(1px 0 0 rgba(124,255,208,.55))
+        drop-shadow(-1px 0 0 rgba(255,79,216,.45));
+    }
+
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- =========================
+       PAGE 1: Splash/Loading
+       ========================= -->
+  <section id="page1" class="page active" aria-label="Splash loading screen">
+    <div class="splash-wrap">
+      <div class="tv-stage">
+        <div
+          class="tv"
+          id="tvButton"
+          role="button"
+          tabindex="0"
+          aria-label="Enter site"
+          title="Entra"
+        >
+          <div class="tv-frame">
+            <div class="screen" aria-hidden="true">
+              <!-- Bottom: clean TV image -->
+              <img src="TV.png" alt="" class="tv-base">
+
+              <!-- Top: static TV GIF (fades but never fully disappears) -->
+              <img src="TVStatic.gif" alt="" class="tv-static" id="tvStatic">
+            </div>
+
+            <div class="hud" aria-label="Loading progress">
+              <div class="progress" aria-hidden="true">
+                <div class="bar" id="bar"></div>
+              </div>
+              <div class="pct" id="pct">0%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       PAGE 2: One-page Website
+       ========================= -->
+  <section id="page2" class="page" aria-label="Main one-page website">
+    <div class="texture" aria-hidden="true"></div>
+
+    <div class="container">
+      <header class="banner">
+        <div class="banner-center">
+          <div class="logo">
+            <img src="Vertebra Logo.png" alt="Vertebra logo" class="logo-img">
+          </div>
+          <div class="tag">Alternative Rock • Roma • dal 2022</div>
+        </div>
+      </header>
+
+      <main class="grid" style="margin-top:18px;">
+        <div class="col">
+          <!-- LEFT COLUMN: Bio -->
+          <section class="card">
+            <div class="inner">
+              <h2>Bio</h2>
+              <p class="muted bio-text">
+                <span class="glitch" data-text="parole tristi in canzoni distorte">parole tristi in canzoni distorte</span>
+                <br/><br/>
+                siamo i Vertebra - alternative rock romano dal 2022<br>vogliamo suonare nella vostra città - siete pronti?
+              </p>
+
+              <div class="cta">
+                <strong>COSA CERCHIAMO</strong>
+                <div class="muted">
+                  Cerchiamo collaboratori di ogni tipo: locali dove suonare, servizi booking, ed etichette discografiche.
+                </div>
+                <a href="#contact" aria-label="Jump to contact section">CONTATTACI →</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- LEFT COLUMN: Upcoming -->
+          <section class="card">
+            <div class="inner">
+              <h2>Prossime uscite</h2>
+              <div class="ep-stack">
+
+                <div class="ep">
+                  <div class="cover">
+                    <img src="Oramai.jpeg" alt="Ora/mai" class="cover-img">
+                  </div>
+
+                  <div class="ep-text">
+                    <div class="muted" style="font-style:italic;">
+                      Marzo 2026 — il prossimo singolo
+                    </div>
+
+                    <div style="font-weight:900; margin-top:6px;">
+                      Ora/mai
+                    </div>
+
+                    <a href="https://open.spotify.com/album/4FDTYF2PWyH08OXjr7A0LP" target="_blank" rel="noopener">
+                      Ascolta su Spotify →
+                    </a>
+                  </div>
+                </div>
+
+                <div class="ep">
+                  <div class="cover">
+                    <img src="Esattamente bene così.jpeg" alt="Esattamente bene così EP cover" class="cover-img">
+                  </div>
+
+                  <div class="ep-text">
+                    <div class="muted" style="font-style:italic;">
+                      Aprile 2026 — il nostro primo EP
+                    </div>
+
+                    <div style="font-weight:900; margin-top:6px;">
+                      Esattamente bene così
+                    </div>
+
+                    <a href="https://open.spotify.com/album/42rUJO7bwc7HNg5FYNZyBk" target="_blank" rel="noopener">
+                      Ascolta su Spotify →
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </section>
+
+          
+        </div>
+
+        <div class="col">
+          <!-- RIGHT COLUMN: Band -->
+          <section class="card">
+            <div class="inner">
+              <h2>Band</h2>
+
+              <div class="photo" aria-label="Band photo">
+                <img src="Couch sip.jpeg" alt="Vertebra band photo" class="photo-img">
+              </div>
+
+              <div class="slideshow" aria-label="Photo slideshow">
+                <h2 style="margin-top:0;">Foto</h2>
+
+                <div class="slide-stage" id="slideStage">
+                  <div class="slide active">
+                    <img src="Live 1.jpg" alt="Live photo 1" class="slide-img">
+                  </div>
+                  <div class="slide">
+                    <img src="Blurry couch.jpeg" alt="Studio photo 1" class="slide-img">
+                  </div>
+                  <div class="slide">
+                    <img src="Live 2.jpg" alt="Live photo 2" class="slide-img">
+                  </div>
+                  <div class="slide">
+                    <img src="Grass couch.jpeg" alt="Studio photo 2" class="slide-img">
+                  </div>
+                </div>
+
+                <div class="slide-controls">
+                  <button class="btn" id="prevBtn" type="button" aria-label="Previous slide">← Prev</button>
+                  <div class="small" id="slideLabel" aria-live="polite">1 / 4</div>
+                  <button class="btn" id="nextBtn" type="button" aria-label="Next slide">Next →</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+<div class="pair-row">
+  <!-- LEFT: Ascolta card (paste your existing Ascolta section here) -->
+  <!-- LEFT COLUMN: Ascolta -->
+          <section class="card">
+            <div class="inner">
+              <h2>Ascolta</h2>
+
+              <div class="custom-player" aria-label="Custom audio player">
+                <div class="cp-now">
+                  <div class="cp-title" id="cpTitle"></div>
+                  <div class="cp-meta" id="cpMeta"></div>
+                </div>
+
+                <div class="cp-controls">
+                  <button class="cp-btn" id="cpPrev" type="button">←</button>
+                  <button class="cp-btn cp-play" id="cpPlay" type="button">▶</button>
+                  <button class="cp-btn" id="cpNext" type="button">→</button>
+
+                  <div class="cp-time">
+                    <span id="cpCur">0:00</span>
+                    <input id="cpSeek" type="range" min="0" max="100" value="0" step="1" aria-label="Seek">
+                    <span id="cpDur">0:00</span>
+                  </div>
+                </div>
+
+                <div class="cp-list" id="cpList" aria-label="Track list"></div>
+                <audio id="cpAudio" preload="metadata"></audio>
+              </div>
+
+            </div>
+          </section>
+
+  <!-- RIGHT: Spotify card <!-- RIGHT COLUMN: Spotify -->
+<section class="card">
+  <div class="inner">
+    <h2>Spotify</h2>
+
+    <iframe data-testid="embed-iframe"
+      style="border-radius:12px"
+      src="https://open.spotify.com/embed/artist/0IWsEfkoHuM7gXc1yerLNs?utm_source=generator"
+      width="100%" height="352" frameBorder="0"
+      allowfullscreen=""
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"></iframe>
+  </div>
+</section>
+
+</div>
+      </main>
+
+      <footer class="footer" id="contact" aria-label="Contact links">
+        <div class="social-icons">
+          <a href="https://www.instagram.com/vertebra.band/" aria-label="Instagram">
+            <img src="IconInstagram.png" alt="Instagram">
+          </a>
+
+          <a href="https://open.spotify.com/artist/0IWsEfkoHuM7gXc1yerLNs" aria-label="Spotify">
+            <img src="IconSpotify.png" alt="Spotify">
+          </a>
+
+          <a href="mailto:stevenmenditto@gmail.com" aria-label="Email">
+            <img src="IconEmail.png" alt="Email">
+          </a>
+        </div>
+
+        <div class="small">
+          © <span id="year"></span> — Vertebra
+        </div>
+      </footer>
+
+
+
+    </div>
+  </section>
+
+
+
+  <script>
+    /* =========================================================
+       PAGE 1: Loading + static GIF fade (NEW)
+       ========================================================= */
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+
+    const tvButton = document.getElementById('tvButton');
+    const pctEl = document.getElementById('pct');
+    const barEl = document.getElementById('bar');
+
+    // NEW: the fading static GIF
+    const tvStatic = document.getElementById('tvStatic');
+
+    let pct = 0;
+    let loaded = false;
+
+    function setStaticIntensity(intensity01){
+      // intensity01: 1 = full static, 0 = no static
+      const n = Math.max(0, Math.min(1, intensity01));
+
+      // Keep some static always visible:
+      const minStatic = 0.18; // <-- adjust (0.10 subtle, 0.25 heavier)
+      const opacity = minStatic + n * (1 - minStatic);
+
+      if (tvStatic) tvStatic.style.opacity = opacity.toFixed(3);
+    }
+
+    function tickLoading(){
+      const inc = Math.random() < 0.7 ? 1 : 2;
+      pct = Math.min(100, pct + inc);
+
+      pctEl.textContent = pct + '%';
+      barEl.style.width = pct + '%';
+
+      // As pct increases, intensity decreases
+      const intensity = 1 - (pct / 100);
+      setStaticIntensity(intensity);
+
+      if(pct >= 100){
+        loaded = true;
+        // lock at minimum static visibility
+        setStaticIntensity(0);
+      }
+    }
+
+    // Start with full static
+    setStaticIntensity(1);
+
+    const loadingInterval = setInterval(() => {
+      tickLoading();
+      if(loaded) clearInterval(loadingInterval);
+    }, 60);
+
+    // Enter site on click (no auto-enter)
+    function enterSite(){
+      page1.classList.remove('active');
+      page2.classList.add('active');
+
+      // optional: ensure static is at minimum before leaving
+      setStaticIntensity(0);
+
+      page2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    tvButton.addEventListener('click', enterSite);
+    tvButton.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' ') enterSite();
+    });
+
+    /* =========================================================
+       PAGE 2: Slideshow
+       ========================================================= */
+    const slides = Array.from(document.querySelectorAll('.slide-stage .slide'));
+    const slideLabel = document.getElementById('slideLabel');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let idx = 0;
+
+    function show(i){
+      idx = (i + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle('active', k === idx));
+      slideLabel.textContent = `${idx + 1} / ${slides.length}`;
+    }
+
+    prevBtn.addEventListener('click', () => show(idx - 1));
+    nextBtn.addEventListener('click', () => show(idx + 1));
+
+    setInterval(() => {
+      if(page2.classList.contains('active')) show(idx + 1);
+    }, 4500);
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ===== Custom Audio Player =====
+    const tracks = [
+      { title: "Tutta questa fretta", artist: "Vertebra", src: "Vertebra - Tutta questa fretta.mp3" },
+      { title: "Ben oltre", artist: "Vertebra", src: "Vertebra - Ben oltre.mp3" },
+      { title: "Quel momento che", artist: "Vertebra", src: "Vertebra - Quel momento che.mp3" }
+    ];
+
+    const cpAudio = document.getElementById("cpAudio");
+    const cpTitleEl = document.getElementById("cpTitle");
+    const cpMetaEl = document.getElementById("cpMeta");
+    const cpPlayBtn = document.getElementById("cpPlay");
+    const cpPrevBtn = document.getElementById("cpPrev");
+    const cpNextBtn = document.getElementById("cpNext");
+    const cpSeek = document.getElementById("cpSeek");
+    const cpCurEl = document.getElementById("cpCur");
+    const cpDurEl = document.getElementById("cpDur");
+    const cpListEl = document.getElementById("cpList");
+
+    let trackIdx = 0;
+
+    function cpFmt(t){
+      if (!Number.isFinite(t)) return "0:00";
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60);
+      return `${m}:${String(s).padStart(2,"0")}`;
+    }
+
+    function escAttr(s){
+      return String(s).replaceAll('"','&quot;');
+    }
+
+    function cpRenderList(){
+      if (!cpListEl) return;
+      cpListEl.innerHTML = "";
+
+      tracks.forEach((tr, i) => {
+        const row = document.createElement("div");
+        row.className = "cp-track" + (i === trackIdx ? " active" : "");
+
+        row.innerHTML = `
+          <div>
+            <div class="cp-track-title">
+              ${
+                i === trackIdx
+                  ? `<span class="glitch" data-text="${escAttr(tr.title)}">${tr.title}</span>`
+                  : tr.title
+              }
+            </div>
+            <small class="cp-meta">${tr.artist}</small>
+          </div>
+        `;
+
+        row.addEventListener("click", () => cpLoad(i, true));
+        cpListEl.appendChild(row);
+      });
+    }
+
+    function cpSetNowPlaying(tr, isPlaying){
+      if (isPlaying){
+        cpTitleEl.innerHTML = `<span class="glitch" data-text="${escAttr(tr.title)}">${tr.title}</span>`;
+      } else {
+        cpTitleEl.textContent = tr.title;
+      }
+      cpMetaEl.textContent = tr.artist;
+    }
+
+    function cpLoad(i, autoplay=false){
+      trackIdx = (i + tracks.length) % tracks.length;
+      const tr = tracks[trackIdx];
+
+      cpAudio.src = tr.src;
+      cpSeek.value = "0";
+      cpCurEl.textContent = "0:00";
+      cpDurEl.textContent = "0:00";
+
+      cpSetNowPlaying(tr, false);
+      cpPlayBtn.textContent = "▶";
+
+      cpRenderList();
+
+      if (autoplay){
+        cpAudio.play()
+          .then(() => {
+            cpPlayBtn.textContent = "❚❚";
+            cpSetNowPlaying(tr, true);
+            cpRenderList();
+          })
+          .catch((err) => console.log("Play blocked:", err));
+      }
+    }
+
+    if (cpAudio && cpTitleEl && cpMetaEl && cpPlayBtn && cpPrevBtn && cpNextBtn && cpSeek && cpCurEl && cpDurEl && cpListEl){
+      cpPlayBtn.addEventListener("click", () => {
+        const tr = tracks[trackIdx];
+
+        if (cpAudio.paused){
+          cpAudio.play()
+            .then(() => {
+              cpPlayBtn.textContent = "❚❚";
+              cpSetNowPlaying(tr, true);
+              cpRenderList();
+            })
+            .catch((err) => console.log("Play blocked:", err));
+        } else {
+          cpAudio.pause();
+          cpPlayBtn.textContent = "▶";
+          cpSetNowPlaying(tr, false);
+          cpRenderList();
+        }
+      });
+
+      cpPrevBtn.addEventListener("click", () => cpLoad(trackIdx - 1, true));
+      cpNextBtn.addEventListener("click", () => cpLoad(trackIdx + 1, true));
+
+      cpAudio.addEventListener("loadedmetadata", () => {
+        cpDurEl.textContent = cpFmt(cpAudio.duration);
+      });
+
+      cpAudio.addEventListener("timeupdate", () => {
+        if (Number.isFinite(cpAudio.duration) && cpAudio.duration > 0){
+          cpSeek.value = String(Math.floor((cpAudio.currentTime / cpAudio.duration) * 100));
+        }
+        cpCurEl.textContent = cpFmt(cpAudio.currentTime);
+      });
+
+      cpSeek.addEventListener("input", () => {
+        if (Number.isFinite(cpAudio.duration) && cpAudio.duration > 0){
+          cpAudio.currentTime = (Number(cpSeek.value) / 100) * cpAudio.duration;
+        }
+      });
+
+      cpAudio.addEventListener("ended", () => cpLoad(trackIdx + 1, true));
+
+      cpLoad(0, false);
+      cpRenderList();
+    }
+  </script>
+</body>
+</html>
