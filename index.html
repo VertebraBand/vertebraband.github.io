@@ -167,26 +167,28 @@
       font-size:14px;
     }
     .progress{
-      flex:1;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      overflow:hidden;
-    }
+  flex:1;
+  height: 10px;
+  border-radius: 999px;
+  background: #000;                 /* empty = black */
+  border: 1px solid #fff;           /* outline = white */
+  overflow: hidden;
+}
     .bar{
-      height:100%;
-      width:0%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(124,255,208,.95), rgba(255,79,216,.9));
-      transition: width .12s linear;
-    }
+  height:100%;
+  width:0%;
+  border-radius: 999px;
+  background: #fff;                 /* fill = white */
+  transition: width .12s linear;
+}
     .pct{
-      min-width: 56px;
-      text-align:right;
-      font-variant-numeric: tabular-nums;
-      color: rgba(255,255,255,.82);
-    }
+  min-width: 56px;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+
+  font-family: "Courier New", Courier, monospace;  /* percent font */
+}
 
     /* =========================================================
        PAGE 2: One-page Website
@@ -1169,6 +1171,7 @@
   </script>
 </body>
 </html>
+
 
 
 
