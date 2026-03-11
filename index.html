@@ -232,7 +232,7 @@
       width:auto;
       height:auto;
       object-fit:contain;
-      filter: drop-shadow(0 0 12px rgba(255,255,255,.12));
+      filter:none;
     }
 
     .tag{
@@ -845,6 +845,74 @@
 
 #disc-fretta{ right:65px; top:235px; }
 
+@media (max-width: 900px){
+
+  .cd-interactive{
+    grid-column:auto;
+  }
+
+ .cd-area{
+  min-height: 340px;
+}
+    
+
+  .cd-player{
+    position:absolute;
+    left:50%;
+    top:28px;
+    transform:translateX(-50%);
+  }
+
+  .player-img{
+    width:280px;
+  }
+
+  .disc{
+    width:155px;
+  }
+
+  #disc-benoltre{
+    left:-10px;
+    top:200px;
+    right:auto;
+  }
+
+  #disc-quel{
+    left:180px;
+    top:200px;
+    right:auto;
+  }
+
+  #disc-fretta{
+    left:83px;
+    top:245px;
+    right:auto;
+  }
+
+  #lidZone{
+    left:50%;
+    top:-24px;
+    width:220px;
+    height:74px;
+    transform:translateX(-50%);
+  }
+
+  #discZone{
+    left:50%;
+    top:50px;
+    width:210px;
+    height:145px;
+    transform:translateX(-50%);
+  }
+
+  #closedZone{
+    left:50%;
+    top:14px;
+    width:225px;
+    height:160px;
+    transform:translateX(-50%);
+  }
+}
   </style>
 </head>
 
@@ -1416,6 +1484,7 @@ const lid = document.getElementById("lidZone")
 const discZone = document.getElementById("discZone")
 
 const closedZone = document.getElementById("closedZone")
+const isMobile = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
 
 function updatePlayerZones(){
 if(state === "open-empty"){
@@ -1477,8 +1546,6 @@ fretta:document.getElementById("track-fretta")
 window.addEventListener("load", () => {
   discs.forEach(disc => {
     saveDiscPosition(disc)
-let startLeft=""
-let startTop=""
   })
 })
 
@@ -1486,64 +1553,100 @@ let startTop=""
 
 discs.forEach(disc => {
 
-disc.ondragstart = () => false
+  disc.ondragstart = () => false
 
-let dragging=false
-let offsetX=0
-let offsetY=0
+  if(isMobile){
+    disc.addEventListener("click", () => {
 
-disc.addEventListener("pointerdown",e=>{
+      if(state !== "open-empty") return
 
-  startLeft = disc.style.left
-  startTop = disc.style.top
+      const track = disc.dataset.track
 
-  dragging=true
-  disc.setPointerCapture(e.pointerId)
+      disc.style.display = "none"
+      loadedTrack = track
+      state = "loaded"
 
-  const rect=disc.getBoundingClientRect()
+      player.src = playerImages[track]
+      updatePlayerZones()
+    })
 
-  offsetX=e.clientX-rect.left
-  offsetY=e.clientY-rect.top
-
-})
-
-disc.addEventListener("pointermove",e=>{
-
-if(!dragging)return
-
-const areaRect=area.getBoundingClientRect()
-
-let x=e.clientX-areaRect.left-offsetX
-let y=e.clientY-areaRect.top-offsetY
-
-disc.style.left=x+"px"
-disc.style.top=y+"px"
-
-})
-
-disc.addEventListener("pointerup",()=>{
-
-  dragging=false
-
-  keepInsideArea(disc)
-
-  const result = checkDrop(disc)
-
-  if(result === "loaded"){
     return
   }
 
-  if(result === "rejected"){
-    disc.style.left = startLeft
-    disc.style.top = startTop
-    return
-  }
+  let dragging=false
+  let offsetX=0
+  let offsetY=0
+  let startLeft=""
+  let startTop=""
 
-  saveDiscPosition(disc)
+  disc.addEventListener("pointerdown",e=>{
+
+    startLeft = disc.style.left
+    startTop = disc.style.top
+
+    dragging=true
+    disc.setPointerCapture(e.pointerId)
+
+    const rect=disc.getBoundingClientRect()
+
+    offsetX=e.clientX-rect.left
+    offsetY=e.clientY-rect.top
+
+  })
+
+  disc.addEventListener("pointermove",e=>{
+
+    if(!dragging)return
+
+    const areaRect=area.getBoundingClientRect()
+
+    let x=e.clientX-areaRect.left-offsetX
+    let y=e.clientY-areaRect.top-offsetY
+
+    disc.style.left=x+"px"
+    disc.style.top=y+"px"
+
+  })
+
+  disc.addEventListener("pointerup",()=>{
+
+    dragging=false
+
+    keepInsideArea(disc)
+
+    const result = checkDrop(disc)
+
+    if(result === "loaded"){
+      return
+    }
+
+    if(result === "rejected"){
+      disc.style.left = startLeft
+      disc.style.top = startTop
+      return
+    }
+
+    saveDiscPosition(disc)
+
+  })
+
+  disc.addEventListener("dblclick",()=>{
+
+    if(state !== "open-empty") return
+
+    const track = disc.dataset.track
+
+    disc.style.display = "none"
+
+    loadedTrack = track
+    state = "loaded"
+
+    player.src = playerImages[track]
+    updatePlayerZones()
+
+  })
 
 })
-})
-
 function keepInsideArea(disc){
 
 const areaRect=area.getBoundingClientRect()
