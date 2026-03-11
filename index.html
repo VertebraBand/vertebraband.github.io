@@ -297,11 +297,11 @@
     }
 
     /* Bio glitch */
-    .bio-text{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size: 14.5px;
-      letter-spacing:.02em;
-    }
+.bio-text{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  letter-spacing:.02em;
+}
     .bio-text .glitch{
       position:relative;
       display:inline-block;
@@ -501,15 +501,14 @@
 
     /* Custom player (kept from your file) */
     .custom-player{
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 16px;
-      background: rgba(0,0,0,.35);
-      box-shadow: 0 12px 34px rgba(0,0,0,.5);
-      padding: 14px;
-      margin-bottom: 14px;
-      font-family: "Courier New", Courier, monospace;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  background: rgba(0,0,0,.35);
+  box-shadow: 0 12px 34px rgba(0,0,0,.5);
+  padding: 14px;
+  margin-bottom: 14px;
+  font-family: "Courier New", Courier, monospace;
 }
-    }
 
     .cp-now{
       display:flex;
@@ -697,6 +696,155 @@
     @media (max-width: 900px){
       .grid{ grid-template-columns: 1fr; }
     }
+
+.clickable-cover {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.clickable-cover:hover {
+  transform: scale(1.03);
+}
+
+.image-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.image-modal.open {
+  display: flex;
+}
+
+.image-modal-content {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.image-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 40px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* =========================
+   INTERACTIVE CD PLAYER
+   ========================= */
+
+.player-img{
+  width:520px;
+  display:block;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
+}
+
+.cd-interactive{
+  grid-column:1 / -1;
+}
+
+.cd-area{
+  position:relative;
+  width:100%;
+  min-height:420px;   /* enough room for player */
+  padding-bottom:40px;
+}
+
+.cd-player{
+  position:absolute;
+  left:120px;
+  top:20px;
+}
+
+#trayZone{
+  position:absolute;
+  left:120px;
+  top:180px;
+  width:300px;
+  height:240px;
+}
+
+#lidZone{
+ position:absolute;
+  left:94px;
+  top:6px;
+  width:336px;
+  height:80px;   /* reduced from 96px */
+  cursor:pointer;
+  z-index:5;
+
+  clip-path: polygon(
+    10% 100%,
+    0% 58%,
+    10% 14%,
+    29% 0%,
+    71% 0%,
+    90% 14%,
+    100% 58%,
+    90% 100%
+  );
+}
+
+#discZone{
+  position:absolute;
+  left:108px;
+  top:96px;      /* lowered slightly */
+  width:288px;
+  height:230px;
+  cursor:pointer;
+  z-index:4;
+
+  clip-path: ellipse(50% 46% at 50% 40%);
+
+}
+
+#lidZone,
+#discZone{
+  cursor:pointer;
+}
+
+.disc{
+  position:absolute;
+  width:320px;
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  -webkit-user-drag:none;
+}
+
+#closedZone{
+  position:absolute;
+  left:78px;
+  top:20px;
+  width:360px;
+  height:300px;
+  cursor:pointer;
+  z-index:6;
+  display:none;
+
+  clip-path: ellipse(48% 46% at 50% 50%);
+
+}
+
+#disc-benoltre{ right:185px; top:20px; }
+
+#disc-quel{ left:40px; top:240px; }
+
+#disc-fretta{ right:65px; top:235px; }
+
   </style>
 </head>
 
@@ -752,167 +900,210 @@
         </div>
       </header>
 
-      <main class="grid" style="margin-top:18px;">
-        <div class="col">
-          <!-- LEFT COLUMN: Bio -->
-          <section class="card">
-            <div class="inner">
-              <h2>Bio</h2>
-              <p class="muted bio-text">
-                <span class="glitch" data-text="parole tristi in canzoni distorte">parole tristi in canzoni distorte</span>
-                <br/><br/>
-                siamo i Vertebra - alternative rock romano dal 2022<br>vogliamo suonare nella vostra città - siete pronti?
-              </p>
+     <main class="grid" style="margin-top:18px;">
 
-              <div class="cta">
-                <strong>COSA CERCHIAMO</strong>
-                <div class="muted">
-                  Cerchiamo collaboratori di ogni tipo: locali dove suonare, servizi booking, ed etichette discografiche.
-                </div>
-                <a href="#contact" aria-label="Jump to contact section">CONTATTACI →</a>
-              </div>
-            </div>
-          </section>
+<!-- INTERACTIVE CD PLAYER -->
+<section class="cd-interactive card">
 
-          <!-- LEFT COLUMN: Upcoming -->
-          <section class="card">
-            <div class="inner">
-              <h2>Prossime uscite</h2>
-              <div class="ep-stack">
+<div class="inner">
 
-                <div class="ep">
-                  <div class="cover">
-                    <img src="Oramai.jpeg" alt="Ora/mai" class="cover-img">
-                  </div>
+<h2>SCEGLI UN DISCO</h2>
 
-                  <div class="ep-text">
-                    <div class="muted" style="font-style:italic;">
-                      Marzo 2026 — il prossimo singolo
-                    </div>
+<div id="cdArea" class="cd-area">
 
-                    <div style="font-weight:900; margin-top:6px;">
-                      Ora/mai
-                    </div>
+<div class="cd-player">
 
-                    <a href="https://distrokid.com/hyperfollow/vertebra2/oramai" target="_blank" rel="noopener">
-                      Ascolta su Spotify →
-                    </a>
-                  </div>
-                </div>
+<img id="playerImage"
+src="cd-player-open-trans.png"
+class="player-img">
 
-                <div class="ep">
-                  <div class="cover">
-                    <img src="Esattamente bene così.jpeg" alt="Esattamente bene così EP cover" class="cover-img">
-                  </div>
-
-                  <div class="ep-text">
-                    <div class="muted" style="font-style:italic;">
-                      Aprile 2026 — il nostro primo EP
-                    </div>
-
-                    <div style="font-weight:900; margin-top:6px;">
-                      Esattamente bene così
-                    </div>
-
-                    <a href="https://open.spotify.com/album/42rUJO7bwc7HNg5FYNZyBk" target="_blank" rel="noopener">
-                      Ascolta su Spotify →
-                    </a>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </section>
-
-          
-        </div>
-
-        <div class="col">
-          <!-- RIGHT COLUMN: Band -->
-          <section class="card">
-            <div class="inner">
-              <h2>Band</h2>
-
-              <div class="photo" aria-label="Band photo">
-                <img src="Couch sip.jpeg" alt="Vertebra band photo" class="photo-img">
-              </div>
-
-              <div class="slideshow" aria-label="Photo slideshow">
-                <h2 style="margin-top:0;">Foto</h2>
-
-                <div class="slide-stage" id="slideStage">
-                  <div class="slide active">
-                    <img src="Live 1.JPG" alt="Live photo 1" class="slide-img">
-                  </div>
-                  <div class="slide">
-                    <img src="Blurry couch.jpeg" alt="Studio photo 1" class="slide-img">
-                  </div>
-                  <div class="slide">
-                    <img src="Live 2.JPG" alt="Live photo 2" class="slide-img">
-                  </div>
-                  <div class="slide">
-                    <img src="Grass couch.jpeg" alt="Studio photo 2" class="slide-img">
-                  </div>
-                </div>
-
-                <div class="slide-controls">
-                  <button class="btn" id="prevBtn" type="button" aria-label="Previous slide">← Prev</button>
-                  <div class="small" id="slideLabel" aria-live="polite">1 / 4</div>
-                  <button class="btn" id="nextBtn" type="button" aria-label="Next slide">Next →</button>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-<div class="pair-row">
-  <!-- LEFT: Ascolta card (paste your existing Ascolta section here) -->
-  <!-- LEFT COLUMN: Ascolta -->
-          <section class="card">
-            <div class="inner">
-              <h2>Ascolta</h2>
-
-              <div class="custom-player" aria-label="Custom audio player">
-                <div class="cp-now">
-                  <div class="cp-title" id="cpTitle"></div>
-                  <div class="cp-meta" id="cpMeta"></div>
-                </div>
-
-                <div class="cp-controls">
-                  <button class="cp-btn" id="cpPrev" type="button">←</button>
-                  <button class="cp-btn cp-play" id="cpPlay" type="button">▶</button>
-                  <button class="cp-btn" id="cpNext" type="button">→</button>
-
-                  <div class="cp-time">
-                    <span id="cpCur">0:00</span>
-                    <input id="cpSeek" type="range" min="0" max="100" value="0" step="1" aria-label="Seek">
-                    <span id="cpDur">0:00</span>
-                  </div>
-                </div>
-
-                <div class="cp-list" id="cpList" aria-label="Track list"></div>
-                <audio id="cpAudio" preload="metadata"></audio>
-              </div>
-
-            </div>
-          </section>
-
-  <!-- RIGHT: Spotify card <!-- RIGHT COLUMN: Spotify -->
-<section class="card">
-  <div class="inner">
-    <h2>Spotify</h2>
-
-    <iframe data-testid="embed-iframe"
-      style="border-radius:12px"
-      src="https://open.spotify.com/embed/artist/0IWsEfkoHuM7gXc1yerLNs?utm_source=generator"
-      width="100%" height="352" frameBorder="0"
-      allowfullscreen=""
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy"></iframe>
-  </div>
-</section>
+<div id="trayZone"></div>
+<div id="lidZone"></div>
+<div id="discZone"></div>
+<div id="closedZone"></div>
 
 </div>
-      </main>
+
+<img src="cd-ben-oltre-disc-trans.png"
+class="disc"
+id="disc-benoltre"
+data-track="benoltre">
+
+<img src="cd-quel-momento-che-disc-trans.png"
+class="disc"
+id="disc-quel"
+data-track="quel">
+
+<img src="cd-tutta-questa-fretta-disc-trans.png"
+class="disc"
+id="disc-fretta"
+data-track="fretta">
+
+</div>
+
+<audio id="track-benoltre" src="Vertebra - Ben oltre.mp3"></audio>
+<audio id="track-quel" src="Vertebra - Quel momento che.mp3"></audio>
+<audio id="track-fretta" src="Vertebra - Tutta questa fretta.mp3"></audio>
+
+</div>
+</section>
+
+  <div class="col">
+    <!-- LEFT COLUMN: Bio -->
+    <section class="card">
+      <div class="inner">
+        <h2>Bio</h2>
+        <p class="muted bio-text">
+          <span class="glitch" data-text="parole tristi in canzoni distorte">parole tristi in canzoni distorte</span>
+          <br/><br/>
+          siamo i Vertebra - alternative rock romano dal 2022<br>vogliamo suonare nella vostra città - siete pronti?
+        </p>
+
+        <div class="cta">
+          <strong>COSA CERCHIAMO</strong>
+          <div class="muted">
+            Cerchiamo collaboratori di ogni tipo: locali dove suonare, servizi booking, ed etichette discografiche.
+          </div>
+          <a href="#contact" aria-label="Jump to contact section">CONTATTACI →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEFT COLUMN: Upcoming -->
+    <section class="card">
+      <div class="inner">
+        <h2>Prossime uscite</h2>
+        <div class="ep-stack">
+
+          <div class="ep">
+            <div class="cover">
+              <img src="Oramai.jpeg" alt="Ora/mai" class="cover-img clickable-cover">
+            </div>
+
+            <div class="ep-text">
+              <div class="muted" style="font-style:italic;">
+               20 Marzo 2026 — il prossimo singolo
+              </div>
+
+              <div style="font-weight:900; margin-top:6px;">
+                Ora/mai
+              </div>
+
+              <a href="https://distrokid.com/hyperfollow/vertebra2/oramai" target="_blank" rel="noopener">
+                Ascolta su Spotify →
+              </a>
+            </div>
+          </div>
+
+          <div class="ep">
+            <div class="cover">
+              <img src="Esattamente bene così.jpeg" alt="Esattamente bene così EP cover" class="cover-img clickable-cover">
+            </div>
+
+            <div class="ep-text">
+              <div class="muted" style="font-style:italic;">
+                18 Aprile 2026 — il nostro primo EP
+              </div>
+
+              <div style="font-weight:900; margin-top:6px;">
+                Esattamente bene così
+              </div>
+
+              <a href="https://open.spotify.com/album/42rUJO7bwc7HNg5FYNZyBk" target="_blank" rel="noopener">
+                Ascolta su Spotify →
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="col">
+    <!-- RIGHT COLUMN: Band -->
+    <section class="card">
+      <div class="inner">
+        <h2>Band</h2>
+
+        <div class="photo" aria-label="Band photo">
+          <img src="Couch sip.jpeg" alt="Vertebra band photo" class="photo-img">
+        </div>
+
+        <div class="slideshow" aria-label="Photo slideshow">
+          <h2 style="margin-top:0;">Foto</h2>
+
+          <div class="slide-stage" id="slideStage">
+            <div class="slide active">
+              <img src="Live 1.JPG" alt="Live photo 1" class="slide-img">
+            </div>
+            <div class="slide">
+              <img src="Blurry couch.jpeg" alt="Studio photo 1" class="slide-img">
+            </div>
+            <div class="slide">
+              <img src="Live 2.JPG" alt="Live photo 2" class="slide-img">
+            </div>
+            <div class="slide">
+              <img src="Grass couch.jpeg" alt="Studio photo 2" class="slide-img">
+            </div>
+          </div>
+
+          <div class="slide-controls">
+            <button class="btn" id="prevBtn" type="button" aria-label="Previous slide">← Prev</button>
+            <div class="small" id="slideLabel" aria-live="polite">1 / 4</div>
+            <button class="btn" id="nextBtn" type="button" aria-label="Next slide">Next →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="pair-row">
+    <!-- LEFT COLUMN: Ascolta -->
+    <section class="card">
+      <div class="inner">
+        <h2>Ascolta</h2>
+
+        <div class="custom-player" aria-label="Custom audio player">
+          <div class="cp-now">
+            <div class="cp-title" id="cpTitle"></div>
+            <div class="cp-meta" id="cpMeta"></div>
+          </div>
+
+          <div class="cp-controls">
+            <button class="cp-btn" id="cpPrev" type="button">←</button>
+            <button class="cp-btn cp-play" id="cpPlay" type="button">▶</button>
+            <button class="cp-btn" id="cpNext" type="button">→</button>
+
+            <div class="cp-time">
+              <span id="cpCur">0:00</span>
+              <input id="cpSeek" type="range" min="0" max="100" value="0" step="1" aria-label="Seek">
+              <span id="cpDur">0:00</span>
+            </div>
+          </div>
+
+          <div class="cp-list" id="cpList" aria-label="Track list"></div>
+          <audio id="cpAudio" preload="metadata"></audio>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: Spotify -->
+    <section class="card">
+      <div class="inner">
+        <h2>Spotify</h2>
+
+        <iframe data-testid="embed-iframe"
+          style="border-radius:12px"
+          src="https://open.spotify.com/embed/artist/0IWsEfkoHuM7gXc1yerLNs?utm_source=generator"
+          width="100%" height="352" frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
+      </div>
+    </section>
+  </div>
+</main>
 
       <footer class="footer" id="contact" aria-label="Contact links">
         <div class="social-icons">
@@ -1173,15 +1364,329 @@
       cpRenderList();
     }
   </script>
+
+  <div id="imageModal" class="image-modal">
+    <button id="closeModal" class="image-modal-close" aria-label="Chiudi">×</button>
+    <img id="modalImage" class="image-modal-content" src="" alt="">
+  </div>
+
+  <script>
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const closeModal = document.getElementById('closeModal');
+    const covers = document.querySelectorAll('.clickable-cover');
+
+    covers.forEach(cover => {
+      cover.addEventListener('click', () => {
+        modalImage.src = cover.src;
+        modalImage.alt = cover.alt;
+        modal.classList.add('open');
+      });
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('open');
+      modalImage.src = '';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('open');
+        modalImage.src = '';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        modal.classList.remove('open');
+        modalImage.src = '';
+      }
+    });
+  </script>
+
+<script>
+
+/* INTERACTIVE CD PLAYER */
+
+const area = document.getElementById("cdArea")
+const player = document.getElementById("playerImage")
+const cdPlayer = document.querySelector(".cd-player")
+const tray = document.getElementById("trayZone")
+const lid = document.getElementById("lidZone")
+const discZone = document.getElementById("discZone")
+
+const closedZone = document.getElementById("closedZone")
+
+function updatePlayerZones(){
+if(state === "open-empty"){
+  lid.style.display = "none"
+  discZone.style.display = "block"
+  closedZone.style.display = "none"
+  return
+}
+
+  if(state === "loaded"){
+    lid.style.display = "block"
+    discZone.style.display = "block"
+    closedZone.style.display = "none"
+    return
+  }
+
+  if(state === "closed"){
+    lid.style.display = "none"
+    discZone.style.display = "none"
+    closedZone.style.display = "block"
+  }
+}
+
+const discs = document.querySelectorAll(".disc")
+
+const savedPositions = {}
+
+function saveDiscPosition(disc){
+  savedPositions[disc.id] = {
+    left: disc.style.left,
+    top: disc.style.top
+  }
+}
+
+function restoreDiscPosition(disc){
+  const pos = savedPositions[disc.id]
+  if(!pos) return
+  disc.style.left = pos.left
+  disc.style.top = pos.top
+}
+
+let state = "open-empty"
+let loadedTrack = null
+
+const playerImages = {
+open:"cd-player-open-trans.png",
+closed:"cd-player-closed-trans.png",
+benoltre:"cd-player-loaded-ben-oltre-trans.png",
+quel:"cd-player-loaded-quel-momento-che-trans.png",
+fretta:"cd-player-loaded-tutta-questa-fretta-trans.png"
+}
+
+const audio = {
+benoltre:document.getElementById("track-benoltre"),
+quel:document.getElementById("track-quel"),
+fretta:document.getElementById("track-fretta")
+}
+
+window.addEventListener("load", () => {
+  discs.forEach(disc => {
+    saveDiscPosition(disc)
+let startLeft=""
+let startTop=""
+  })
+})
+
+/* DRAG SYSTEM */
+
+discs.forEach(disc => {
+
+disc.ondragstart = () => false
+
+let dragging=false
+let offsetX=0
+let offsetY=0
+
+disc.addEventListener("pointerdown",e=>{
+
+  startLeft = disc.style.left
+  startTop = disc.style.top
+
+  dragging=true
+  disc.setPointerCapture(e.pointerId)
+
+  const rect=disc.getBoundingClientRect()
+
+  offsetX=e.clientX-rect.left
+  offsetY=e.clientY-rect.top
+
+})
+
+disc.addEventListener("pointermove",e=>{
+
+if(!dragging)return
+
+const areaRect=area.getBoundingClientRect()
+
+let x=e.clientX-areaRect.left-offsetX
+let y=e.clientY-areaRect.top-offsetY
+
+disc.style.left=x+"px"
+disc.style.top=y+"px"
+
+})
+
+disc.addEventListener("pointerup",()=>{
+
+  dragging=false
+
+  keepInsideArea(disc)
+
+  const result = checkDrop(disc)
+
+  if(result === "loaded"){
+    return
+  }
+
+  if(result === "rejected"){
+    disc.style.left = startLeft
+    disc.style.top = startTop
+    return
+  }
+
+  saveDiscPosition(disc)
+
+})
+})
+
+function keepInsideArea(disc){
+
+const areaRect=area.getBoundingClientRect()
+
+let left=disc.offsetLeft
+let top=disc.offsetTop
+
+const maxX=areaRect.width-disc.offsetWidth
+const maxY=areaRect.height-disc.offsetHeight
+
+if(left<0)left=0
+if(top<0)top=0
+
+if(left>maxX)left=maxX
+if(top>maxY)top=maxY
+
+disc.style.left=left+"px"
+disc.style.top=top+"px"
+
+}
+
+/* DROP DETECTION */
+
+function checkDrop(disc){
+
+  const discRect = disc.getBoundingClientRect()
+  const discCenterX = discRect.left + discRect.width / 2
+  const discCenterY = discRect.top + discRect.height / 2
+
+  // ----- helper: point inside ellipse -----
+  function pointInsideEllipse(zoneRect, cxRatio, cyRatio, rxRatio, ryRatio){
+    const ellipseCenterX = zoneRect.left + zoneRect.width * cxRatio
+    const ellipseCenterY = zoneRect.top + zoneRect.height * cyRatio
+    const radiusX = zoneRect.width * rxRatio
+    const radiusY = zoneRect.height * ryRatio
+
+    const dx = discCenterX - ellipseCenterX
+    const dy = discCenterY - ellipseCenterY
+
+    return ((dx * dx) / (radiusX * radiusX)) +
+           ((dy * dy) / (radiusY * radiusY)) <= 1
+  }
+
+  // ----- reject discs over the lid zone in State 2 -----
+  if(state === "loaded"){
+    const lidRect = lid.getBoundingClientRect()
+
+    if(pointInsideEllipse(lidRect, 0.5, 0.5, 0.5, 0.5)){
+      return "rejected"
+    }
+  }
+
+  // ----- CLOSED STATE: reject discs dropped onto closed player -----
+  if(state === "closed"){
+    const zoneRect = closedZone.getBoundingClientRect()
+
+    if(pointInsideEllipse(zoneRect, 0.50, 0.50, 0.48, 0.46)){
+      return "rejected"
+    }
+
+    return "none"
+  }
+
+  // ----- OPEN / LOADED STATES: use the disc zone -----
+  const zoneRect = discZone.getBoundingClientRect()
+  const insideDiscZone = pointInsideEllipse(zoneRect, 0.50, 0.40, 0.50, 0.46)
+
+  if(!insideDiscZone) return "none"
+
+  if(state === "open-empty"){
+    const track = disc.dataset.track
+
+    disc.style.display = "none"
+
+    loadedTrack = track
+    state = "loaded"
+
+    player.src = playerImages[track]
+    updatePlayerZones()
+    return "loaded"
+  }
+
+  if(state === "loaded"){
+    return "rejected"
+  }
+
+  return "none"
+}
+/* CLOSE LID */
+
+lid.onclick=(e)=>{
+
+  e.stopPropagation()
+
+  if(state !== "loaded") return
+
+  player.src = playerImages.closed
+  audio[loadedTrack].play()
+  state = "closed"
+  updatePlayerZones()
+}
+
+/* OPEN PLAYER */
+
+closedZone.onclick=(e)=>{
+
+  e.stopPropagation()
+
+  if(state !== "closed") return
+
+  audio[loadedTrack].pause()
+  audio[loadedTrack].currentTime = 0
+
+  player.src = playerImages[loadedTrack]
+  state = "loaded"
+  updatePlayerZones()
+}
+
+/* EJECT DISC */
+
+discZone.onclick=(e)=>{
+
+  e.stopPropagation()
+
+  if(state !== "loaded") return
+
+  const disc = document.querySelector(`[data-track="${loadedTrack}"]`)
+
+  disc.style.display = "block"
+  disc.style.left = ""
+  disc.style.top = ""
+saveDiscPosition(disc)
+
+  player.src = playerImages.open
+
+  loadedTrack = null
+  state = "open-empty"
+  updatePlayerZones()
+}
+updatePlayerZones()
+
+
+</script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
