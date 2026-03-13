@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vertebra - parole tristi in canzoni distorte</title>
+  <link rel="icon" type="image/png" href="VA Favicon.png">
 
   <style>
     :root{
@@ -18,26 +19,39 @@
       --radius: 18px;
     }
 
-    /* =========================
-       INTRO TV ASSETS (NEW)
-       ========================= */
-    .tv-base,
+    .tv-base{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+    .tv-mid{
+  position:absolute;
+  width:70%;
+  height:85%;   /* taller than width */
+  left:49.5%;
+  top:46%;
+  transform:translate(-50%,-50%);
+  object-fit:fill;   /* allows stretching */
+  pointer-events:none;
+}
     .tv-static{
       position:absolute;
       inset:0;
       width:100%;
       height:100%;
-      object-fit: contain;   /* keeps whole TV visible */
+      object-fit: contain;
       display:block;
     }
 
     .tv-static{
-      opacity: 1;            /* starts fully visible */
+      opacity: 1;
       transition: opacity 120ms linear;
       pointer-events:none;
     }
 
-    /* --- Global --- */
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
@@ -52,7 +66,6 @@
       position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;
     }
 
-    /* --- Subtle texture (Page 2) --- */
     .texture{
       position:absolute; inset:0;
       background:
@@ -65,7 +78,6 @@
       filter: contrast(115%);
     }
 
-    /* --- Page Wrapper --- */
     .page{
       min-height:100vh;
       display:none;
@@ -73,9 +85,6 @@
     }
     .page.active{ display:block; }
 
-    /* =========================================================
-       PAGE 1: Splash / Loading
-       ========================================================= */
     #page1{
       display:flex;
       align-items:center;
@@ -84,7 +93,6 @@
       background:#000;
     }
 
-    /* Center the beginning elements (TV + everything) */
     .splash-wrap{
       width:min(980px, 100%);
       display:flex;
@@ -92,7 +100,6 @@
       align-items:center;
     }
 
-    /* TV composition */
     .tv-stage{
       position:relative;
       width:min(720px, 100%);
@@ -156,7 +163,6 @@
       justify-content:center;
     }
 
-    /* Loading HUD */
     .hud{
       display:flex;
       align-items:center;
@@ -167,32 +173,28 @@
       font-size:14px;
     }
     .progress{
-  flex:1;
-  height: 10px;
-  border-radius: 999px;
-  background: #000;                 /* empty = black */
-  border: 1px solid #fff;           /* outline = white */
-  overflow: hidden;
-}
+      flex:1;
+      height: 10px;
+      border-radius: 999px;
+      background: #000;
+      border: 1px solid #fff;
+      overflow: hidden;
+    }
     .bar{
-  height:100%;
-  width:0%;
-  border-radius: 999px;
-  background: #fff;                 /* fill = white */
-  transition: width .12s linear;
-}
+      height:100%;
+      width:0%;
+      border-radius: 999px;
+      background: #fff;
+      transition: width .12s linear;
+    }
     .pct{
-  min-width: 56px;
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-  color: #fff;
+      min-width: 56px;
+      text-align:right;
+      font-variant-numeric: tabular-nums;
+      color: #fff;
+      font-family: "Courier New", Courier, monospace;
+    }
 
-  font-family: "Courier New", Courier, monospace;  /* percent font */
-}
-
-    /* =========================================================
-       PAGE 2: One-page Website
-       ========================================================= */
     #page2{
       padding: clamp(18px, 3vw, 42px);
     }
@@ -204,7 +206,6 @@
       z-index: 1;
     }
 
-    /* Banner / logo */
     .banner{
       position: relative;
       display:flex;
@@ -218,7 +219,6 @@
       backdrop-filter: blur(8px);
     }
 
-    /* (kept from your file — note you have duplicate .logo rules; leaving as-is) */
     .logo{
       height:80px;
       width:100%;
@@ -242,7 +242,6 @@
       text-align:center;
     }
 
-    /* Main grid */
     .grid{
       margin-top: 18px;
       display:grid;
@@ -257,18 +256,7 @@
       gap:18px;
       min-width:0;
     }
-/* Pair two cards so they line up perfectly (Ascolta + Spotify) */
-.pair-row{
-  grid-column: 1 / -1;           /* spans across both grid columns */
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:18px;
-  align-items: stretch;          /* forces equal height */
-}
 
-@media (max-width: 900px){
-  .pair-row{ grid-template-columns: 1fr; }
-}
     .card{
       border:1px solid var(--border);
       border-radius: var(--radius);
@@ -281,27 +269,25 @@
       padding: 16px;
     }
     .card h2{
-  margin: 0 0 10px;
+      margin: 0 0 10px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.9);
+    }
 
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 800;
-
-  font-size: 16px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.9);
-}
     .muted{
       color: rgba(255,255,255,.72);
       line-height: 1.6;
     }
 
-    /* Bio glitch */
-.bio-text{
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  letter-spacing:.02em;
-}
+    .bio-text{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      letter-spacing:.02em;
+    }
     .bio-text .glitch{
       position:relative;
       display:inline-block;
@@ -330,7 +316,6 @@
       clip-path: inset(45% 0 0 0);
     }
 
-    /* CTA */
     .cta{
       margin-top: 12px;
       padding: 12px;
@@ -365,21 +350,6 @@
       box-shadow: 0 10px 22px rgba(0,0,0,.45);
     }
 
-    /* Embedded player placeholder */
-    .player{
-      border-radius: 14px;
-      border:1px dashed rgba(255,255,255,.22);
-      background: rgba(0,0,0,.35);
-      padding: 14px;
-      min-height: 120px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      color: rgba(255,255,255,.7);
-    }
-
-    /* EP stack */
     .ep{
       display:grid;
       grid-template-columns: auto 1fr;
@@ -389,16 +359,16 @@
     .ep-text{ min-width:0; }
 
     .cover{
-  width:180px;
-  min-width:180px;
-  aspect-ratio: 1 / 1;
-  overflow:hidden;
-  padding:10px;                 /* ← RESTORED BUFFER SPACE */
-  border-radius:12px;
-  border:1px dashed rgba(255,255,255,.22);
-  background: rgba(0,0,0,.35);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
-}
+      width:180px;
+      min-width:180px;
+      aspect-ratio: 1 / 1;
+      overflow:hidden;
+      padding:10px;
+      border-radius:12px;
+      border:1px dashed rgba(255,255,255,.22);
+      background: rgba(0,0,0,.35);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
     .cover-img{
       width:100%;
       height:100%;
@@ -426,16 +396,14 @@
       background: rgba(255,255,255,.08);
     }
 
-    /* Band photo + slideshow */
     .photo{
-  padding:18px;
-  overflow:hidden;
-  border-radius:16px;
-
-  border:1px dashed rgba(255,255,255,.22);
-  background: rgba(0,0,0,.35);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
-}
+      padding:18px;
+      overflow:hidden;
+      border-radius:16px;
+      border:1px dashed rgba(255,255,255,.22);
+      background: rgba(0,0,0,.35);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
     .photo-img{
       width:100%;
       height:100%;
@@ -443,6 +411,35 @@
       object-fit:cover;
       border-radius:12px;
     }
+
+.lyrics-flip-wrap{
+  padding:18px;
+  overflow:hidden;
+  border-radius:16px;
+  border:1px dashed rgba(255,255,255,.22);
+  background: rgba(0,0,0,.35);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+.lyrics-flip-img{
+  width:100%;
+  display:block;
+  border-radius:12px;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-drag:none;
+  transition: transform .15s ease, opacity .15s ease;
+}
+
+.lyrics-flip-img:hover{
+  transform: scale(1.01);
+}
+
+.lyrics-flip-img.done{
+  cursor:default;
+  opacity:.96;
+pointer-events:none;
+}
 
     .slideshow{ margin-top: 18px; }
 
@@ -454,17 +451,22 @@
       background: rgba(0,0,0,.35);
       min-height: clamp(300px, 45vh, 460px);
     }
-    .slide{
-      position:absolute;
-      inset:0;
-      opacity:0;
-      transition: opacity .5s ease;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-    }
-    .slide.active{ opacity:1; }
+.slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition: opacity .5s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 18px;
+  pointer-events:none;
+}
+
+.slide.active{
+  opacity:1;
+  pointer-events:auto;
+}
 
     .slide-img{
       width:100%;
@@ -483,6 +485,10 @@
       color: rgba(255,255,255,.7);
       font-size: 13px;
     }
+
+.slide-img.top{
+  object-position: top center;
+}
     .btn{
       appearance:none;
       border:1px solid rgba(255,255,255,.18);
@@ -499,132 +505,6 @@
       background: rgba(255,255,255,.08);
     }
 
-    /* Custom player (kept from your file) */
-    .custom-player{
-  border:1px solid rgba(255,255,255,.12);
-  border-radius: 16px;
-  background: rgba(0,0,0,.35);
-  box-shadow: 0 12px 34px rgba(0,0,0,.5);
-  padding: 14px;
-  margin-bottom: 14px;
-  font-family: "Courier New", Courier, monospace;
-}
-
-    .cp-now{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      margin-bottom: 10px;
-    }
-
-    .cp-title{
-      font-weight:900;
-      letter-spacing:.04em;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 16px;
-      color: rgba(255,255,255,.95);
-    }
-
-    .cp-meta{
-      font-family: "Courier New", Courier, monospace;
-      color: rgba(255,255,255,.55);
-      font-size: 13px;
-    }
-
-    .cp-controls{
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      gap:10px;
-    }
-
-    .cp-btn{
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.9);
-      padding: 10px 12px;
-      border-radius: 999px;
-      cursor:pointer;
-    }
-
-    .cp-play{
-      font-size: 18px;
-      font-weight: 900;
-      line-height: 1;
-      min-width: 56px;
-      text-align:center;
-    }
-
-    .cp-time{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex:1;
-      min-width: 240px;
-      color: rgba(255,255,255,.7);
-      font-size: 13px;
-    }
-    #cpSeek{ width:100%; }
-
-    .cp-list{
-      margin-top: 12px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .cp-track{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      cursor:pointer;
-    }
-    .cp-track:hover{ border-color: rgba(255,255,255,.22); }
-    .cp-track.active{
-      border-color: rgba(124,255,208,.45);
-      background: rgba(124,255,208,.08);
-    }
-    .cp-track small{ color: rgba(255,255,255,.6); }
-    .cp-track-title{
-  font-weight: 700; /* or 800 if you want it heavier */
-}
-
-    /* Glitch ONLY for the playing track */
-    .custom-player .glitch{
-      position: relative;
-      display: inline-block;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: .04em;
-      color: rgba(255,255,255,.95);
-    }
-    .custom-player .glitch::before,
-    .custom-player .glitch::after{
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      top: 0;
-      opacity: .7;
-      pointer-events: none;
-    }
-    .custom-player .glitch::before{
-      transform: translate(1px, -1px);
-      color: var(--accent);
-      clip-path: inset(0 0 55% 0);
-    }
-    .custom-player .glitch::after{
-      transform: translate(-1px, 1px);
-      color: var(--accent2);
-      clip-path: inset(45% 0 0 0);
-    }
-
-    /* Footer */
     .footer{
       margin-top: 18px;
       padding: 16px;
@@ -644,7 +524,6 @@
       letter-spacing:.02em;
     }
 
-    /* Social Icons */
     .social-icons{
       width:100%;
       display:flex;
@@ -671,17 +550,17 @@
     }
 
     .icon-instagram{
-  transform: scale(1.4) translateY(1px);
-}
+      transform: scale(1.4) translateY(1px);
+    }
 
-.icon-spotify{
-  transform: scale(1.05);
-}
+    .icon-spotify{
+      transform: scale(1.05);
+    }
 
-.icon-email{
-  transform: scale(.95) translateY(-1px);
-}
-    
+    .icon-email{
+      transform: scale(.95) translateY(-1px);
+    }
+
     .social-icons a:hover{
       transform: translateY(-2px);
       border-color: rgba(124,255,208,.45);
@@ -693,233 +572,363 @@
         drop-shadow(-1px 0 0 rgba(255,79,216,.45));
     }
 
-    @media (max-width: 900px){
-      .grid{ grid-template-columns: 1fr; }
+    .clickable-cover {
+      cursor: pointer;
+      transition: transform 0.2s ease;
     }
 
-.clickable-cover {
-  cursor: pointer;
-  transition: transform 0.2s ease;
+    .clickable-cover:hover {
+      transform: scale(1.03);
+    }
+
+    .image-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .image-modal.open {
+      display: flex;
+    }
+
+    .image-modal-content {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .image-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 40px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .player-img{
+      width:250px;
+      display:block;
+      user-select:none;
+      -webkit-user-drag:none;
+      pointer-events:none;
+    }
+
+    .cd-interactive{
+      grid-column:1 / -1;
+    }
+
+    .cd-area{
+      position:relative;
+      width:100%;
+      min-height:420px;
+      padding-bottom:40px;
+    }
+
+    .cd-player{
+      position:absolute;
+      left:250px;
+      top:20px;
+    }
+
+    #trayZone{
+      position:absolute;
+      left:120px;
+      top:180px;
+      width:300px;
+      height:240px;
+    }
+
+    #lidZone{
+      position:absolute;
+      left:-38px;
+      top:14px;
+      width:336px;
+      height:80px;
+      cursor:pointer;
+      z-index:5;
+      clip-path: polygon(
+        10% 100%,
+        0% 58%,
+        10% 14%,
+        29% 0%,
+        71% 0%,
+        90% 14%,
+        100% 58%,
+        90% 100%
+      );
+    }
+
+    #discZone{
+      position:absolute;
+      left:-15px;
+      top:100px;
+      width:288px;
+      height:230px;
+      cursor:pointer;
+      z-index:4;
+      clip-path: ellipse(50% 46% at 50% 40%);
+    }
+
+    #lidZone,
+    #discZone{
+      cursor:pointer;
+    }
+
+    .disc{
+      position:absolute;
+      width:200px;
+      cursor:grab;
+      user-select:none;
+      touch-action:none;
+      -webkit-user-drag:none;
+    }
+
+    #closedZone{
+      position:absolute;
+      left:-54px;
+      top:20px;
+      width:360px;
+      height:300px;
+      cursor:pointer;
+      z-index:6;
+      display:none;
+      clip-path: ellipse(48% 46% at 50% 50%);
+    }
+
+    .cd-nowbar{
+      margin-top: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      background: rgba(0,0,0,.35);
+      box-shadow: 0 12px 34px rgba(0,0,0,.35);
+      padding: 14px 16px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    .cd-now-meta{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      margin-bottom:10px;
+      min-height: 44px;
+    }
+
+    .cd-now-title{
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: rgba(255,255,255,.95);
+      min-height: 20px;
+    }
+
+    .cd-now-artist{
+      font-size: 13px;
+      color: rgba(255,255,255,.55);
+      min-height: 16px;
+    }
+
+    .cd-now-progress{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color: rgba(255,255,255,.75);
+      font-size: 13px;
+    }
+
+    #cdNowSeek{
+  flex:1;
+  min-width:0;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  background: linear-gradient(to right, #fff 0%, #fff 0%, #000 0%, #000 100%);
+  outline: none;
+  overflow: hidden;
 }
 
-.clickable-cover:hover {
-  transform: scale(1.03);
-}
-
-.image-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-.image-modal.open {
-  display: flex;
-}
-
-.image-modal-content {
-  max-width: 90vw;
-  max-height: 85vh;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-}
-
-.image-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 24px;
+/* Chrome / Safari track */
+#cdNowSeek::-webkit-slider-runnable-track{
+  height: 10px;
   background: transparent;
   border: none;
-  color: white;
-  font-size: 40px;
-  line-height: 1;
+  border-radius: 999px;
+}
+
+/* Chrome / Safari thumb */
+#cdNowSeek::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  margin-top: -4px;
   cursor: pointer;
 }
 
-/* =========================
-   INTERACTIVE CD PLAYER
-   ========================= */
-
-.player-img{
-  width:520px;
-  display:block;
-  user-select:none;
-  -webkit-user-drag:none;
-  pointer-events:none;
+/* Firefox track */
+#cdNowSeek::-moz-range-track{
+  height: 10px;
+  background: #000;
+  border: none;
+  border-radius: 999px;
 }
 
-.cd-interactive{
-  grid-column:1 / -1;
+/* Firefox played portion */
+#cdNowSeek::-moz-range-progress{
+  height: 10px;
+  background: #fff;
+  border-radius: 999px;
 }
 
-.cd-area{
-  position:relative;
-  width:100%;
-  min-height:420px;   /* enough room for player */
-  padding-bottom:40px;
+/* Firefox thumb */
+#cdNowSeek::-moz-range-thumb{
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  cursor: pointer;
 }
 
-.cd-player{
-  position:absolute;
-  left:120px;
-  top:20px;
+    .cd-now-title.glitch{
+      position: relative;
+      display: inline-block;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: rgba(255,255,255,.95);
+    }
+
+    .cd-now-title.glitch::before,
+    .cd-now-title.glitch::after{
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: .7;
+      pointer-events: none;
+    }
+
+    .cd-now-title.glitch::before{
+      transform: translate(1px, -1px);
+      color: var(--accent);
+      clip-path: inset(0 0 55% 0);
+    }
+
+    .cd-now-title.glitch::after{
+      transform: translate(-1px, 1px);
+      color: var(--accent2);
+      clip-path: inset(45% 0 0 0);
+    }
+
+    #disc-benoltre{ right:230px; top:20px; }
+    #disc-quel{ left:40px; top:200px; }
+    #disc-fretta{ right:65px; top:190px; }
+
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+
+      .cd-interactive{
+        grid-column:auto;
+      }
+
+      .cd-area{
+        min-height: 340px;
+      }
+
+      .cd-player{
+        position:absolute;
+        left:50%;
+        top:28px;
+        transform:translateX(-50%);
+      }
+
+      .player-img{
+        width:150px;
+      }
+
+      .disc{
+        width:110px;
+      }
+
+      .cd-nowbar{
+        margin-top: 10px;
+        padding: 12px 14px;
+      }
+
+      .cd-now-title{
+        font-size: 14px;
+      }
+
+      .cd-now-progress{
+        gap:10px;
+        font-size: 12px;
+      }
+
+      #disc-benoltre{
+  left:50%;
+  right:auto;
+  top:200px;
+  transform:translateX(-170px);   /* more left */
 }
 
-#trayZone{
-  position:absolute;
-  left:120px;
-  top:180px;
-  width:300px;
-  height:240px;
+#disc-quel{
+  left:50%;
+  right:auto;
+  top:200px;
+  transform:translateX(60px);     /* more right */
 }
 
-#lidZone{
- position:absolute;
-  left:94px;
-  top:6px;
-  width:336px;
-  height:80px;   /* reduced from 96px */
-  cursor:pointer;
-  z-index:5;
-
-  clip-path: polygon(
-    10% 100%,
-    0% 58%,
-    10% 14%,
-    29% 0%,
-    71% 0%,
-    90% 14%,
-    100% 58%,
-    90% 100%
-  );
+#disc-fretta{
+  left:50%;
+  right:auto;
+  top:230px;                      /* more up */
+  transform:translateX(-57px);    /* keep centered */
 }
 
-#discZone{
-  position:absolute;
-  left:108px;
-  top:96px;      /* lowered slightly */
-  width:288px;
-  height:230px;
-  cursor:pointer;
-  z-index:4;
+      #lidZone{
+        left:50%;
+        top:-15px;
+        width:220px;
+        height:74px;
+        transform:translateX(-50%);
+      }
 
-  clip-path: ellipse(50% 46% at 50% 40%);
+      #discZone{
+        left:50%;
+        top:60px;
+        width:210px;
+        height:145px;
+        transform:translateX(-50%);
+      }
 
+      #closedZone{
+        left:50%;
+        top:30px;
+        width:225px;
+        height:160px;
+        transform:translateX(-50%);    
 }
-
-#lidZone,
-#discZone{
-  cursor:pointer;
-}
-
-.disc{
-  position:absolute;
-  width:320px;
-  cursor:grab;
-  user-select:none;
-  touch-action:none;
-  -webkit-user-drag:none;
-}
-
-#closedZone{
-  position:absolute;
-  left:78px;
-  top:20px;
-  width:360px;
-  height:300px;
-  cursor:pointer;
-  z-index:6;
-  display:none;
-
-  clip-path: ellipse(48% 46% at 50% 50%);
-
-}
-
-#disc-benoltre{ right:185px; top:20px; }
-
-#disc-quel{ left:40px; top:240px; }
-
-#disc-fretta{ right:65px; top:235px; }
-
-@media (max-width: 900px){
-
-  .cd-interactive{
-    grid-column:auto;
-  }
-
- .cd-area{
-  min-height: 340px;
-}
-    
-
-  .cd-player{
-    position:absolute;
-    left:50%;
-    top:28px;
-    transform:translateX(-50%);
-  }
-
-  .player-img{
-    width:280px;
-  }
-
-  .disc{
-    width:155px;
-  }
-
-  #disc-benoltre{
-    left:-10px;
-    top:200px;
-    right:auto;
-  }
-
-  #disc-quel{
-    left:180px;
-    top:200px;
-    right:auto;
-  }
-
-  #disc-fretta{
-    left:83px;
-    top:245px;
-    right:auto;
-  }
-
-  #lidZone{
-    left:50%;
-    top:-24px;
-    width:220px;
-    height:74px;
-    transform:translateX(-50%);
-  }
-
-  #discZone{
-    left:50%;
-    top:50px;
-    width:210px;
-    height:145px;
-    transform:translateX(-50%);
-  }
-
-  #closedZone{
-    left:50%;
-    top:14px;
-    width:225px;
-    height:160px;
-    transform:translateX(-50%);
-  }
-}
+    }
   </style>
 </head>
 
 <body>
-  <!-- =========================
-       PAGE 1: Splash/Loading
-       ========================= -->
   <section id="page1" class="page active" aria-label="Splash loading screen">
     <div class="splash-wrap">
       <div class="tv-stage">
@@ -933,10 +942,8 @@
         >
           <div class="tv-frame">
             <div class="screen" aria-hidden="true">
-              <!-- Bottom: clean TV image -->
-              <img src="TV.png" alt="" class="tv-base">
-
-              <!-- Top: static TV GIF (fades but never fully disappears) -->
+              <img src="RetroTV.png" alt="" class="tv-base">
+              <img src="Logo.gif" alt="" class="tv-mid" id="tvMid">
               <img src="TVStatic.gif" alt="" class="tv-static" id="tvStatic">
             </div>
 
@@ -952,9 +959,6 @@
     </div>
   </section>
 
-  <!-- =========================
-       PAGE 2: One-page Website
-       ========================= -->
   <section id="page2" class="page" aria-label="Main one-page website">
     <div class="texture" aria-hidden="true"></div>
 
@@ -968,210 +972,219 @@
         </div>
       </header>
 
-     <main class="grid" style="margin-top:18px;">
+      <main class="grid" style="margin-top:18px;">
 
-<!-- INTERACTIVE CD PLAYER -->
-<section class="cd-interactive card">
+        <section class="cd-interactive card">
+          <div class="inner">
 
-<div class="inner">
+            <h2>SCEGLI UN DISCO</h2>
 
-<h2>SCEGLI UN DISCO</h2>
+            <div id="cdArea" class="cd-area">
+              <div class="cd-player">
+                <img id="playerImage"
+                  src="cd-player-open-trans.png"
+                  class="player-img">
 
-<div id="cdArea" class="cd-area">
+                <div id="trayZone"></div>
+                <div id="lidZone"></div>
+                <div id="discZone"></div>
+                <div id="closedZone"></div>
+              </div>
 
-<div class="cd-player">
+              <img src="cd-ben-oltre-disc-trans.png"
+                class="disc"
+                id="disc-benoltre"
+                data-track="benoltre">
 
-<img id="playerImage"
-src="cd-player-open-trans.png"
-class="player-img">
+              <img src="cd-quel-momento-che-disc-trans.png"
+                class="disc"
+                id="disc-quel"
+                data-track="quel">
 
-<div id="trayZone"></div>
-<div id="lidZone"></div>
-<div id="discZone"></div>
-<div id="closedZone"></div>
+              <img src="cd-tutta-questa-fretta-disc-trans.png"
+                class="disc"
+                id="disc-fretta"
+                data-track="fretta">
+            </div>
 
-</div>
+            <audio id="track-benoltre" src="Vertebra - Ben oltre.mp3"></audio>
+            <audio id="track-quel" src="Vertebra - Quel momento che.mp3"></audio>
+            <audio id="track-fretta" src="Vertebra - Tutta questa fretta.mp3"></audio>
 
-<img src="cd-ben-oltre-disc-trans.png"
-class="disc"
-id="disc-benoltre"
-data-track="benoltre">
+            <div class="cd-nowbar" id="cdNowBar" aria-label="Now playing">
+              <div class="cd-now-meta">
+                <div class="cd-now-title" id="cdNowTitle"></div>
+                <div class="cd-now-artist" id="cdNowArtist"></div>
+              </div>
 
-<img src="cd-quel-momento-che-disc-trans.png"
-class="disc"
-id="disc-quel"
-data-track="quel">
+              <div class="cd-now-progress">
+                <span id="cdNowCur">0:00</span>
+                <input id="cdNowSeek" type="range" min="0" max="100" value="0" step="1" aria-label="Playback progress">
+                <span id="cdNowDur">0:00</span>
+              </div>
+            </div>
 
-<img src="cd-tutta-questa-fretta-disc-trans.png"
-class="disc"
-id="disc-fretta"
-data-track="fretta">
+          </div>
+        </section>
 
-</div>
+        <div class="col">
+          <section class="card">
+            <div class="inner">
+              <h2>Bio</h2>
+              <p class="muted bio-text">
+                <span class="glitch" data-text="parole tristi in canzoni distorte">parole tristi in canzoni distorte</span>
+                <br/><br/>
+                siamo i Vertebra - alternative rock romano dal 2022<br>vogliamo suonare nella vostra città - siete pronti?
+              </p>
 
-<audio id="track-benoltre" src="Vertebra - Ben oltre.mp3"></audio>
-<audio id="track-quel" src="Vertebra - Quel momento che.mp3"></audio>
-<audio id="track-fretta" src="Vertebra - Tutta questa fretta.mp3"></audio>
+              <div class="cta">
+                <strong>COSA CERCHIAMO</strong>
+                <div class="muted">
+                  Cerchiamo collaboratori di ogni tipo: locali dove suonare, servizi booking, ed etichette discografiche.
+                </div>
+                <a href="#contact" aria-label="Jump to contact section">CONTATTACI →</a>
+              </div>
+            </div>
+          </section>
 
-</div>
+          <section class="card">
+            <div class="inner">
+              <h2>Prossime uscite</h2>
+              <div class="ep-stack">
+
+                <div class="ep">
+                  <div class="cover">
+                    <img src="Oramai.jpeg" alt="Ora/mai" class="cover-img clickable-cover">
+                  </div>
+
+                  <div class="ep-text">
+                    <div class="muted" style="font-style:italic;">
+                      20 Marzo 2026 — il prossimo singolo
+                    </div>
+
+                    <div style="font-weight:900; margin-top:6px;">
+                      Ora/mai
+                    </div>
+
+                    <a href="https://distrokid.com/hyperfollow/vertebra2/oramai" target="_blank" rel="noopener">
+                      Ascolta su Spotify →
+                    </a>
+                  </div>
+                </div>
+
+                <div class="ep">
+                  <div class="cover">
+                    <img src="Esattamente bene così.jpeg" alt="Esattamente bene così EP cover" class="cover-img clickable-cover">
+                  </div>
+
+                  <div class="ep-text">
+                    <div class="muted" style="font-style:italic;">
+                      18 Aprile 2026 — il nostro primo EP
+                    </div>
+
+                    <div style="font-weight:900; margin-top:6px;">
+                      Esattamente bene così
+                    </div>
+
+                    <a href="https://open.spotify.com/album/42rUJO7bwc7HNg5FYNZyBk" target="_blank" rel="noopener">
+                      Ascolta su Spotify →
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </section>
+
+<section class="card">
+  <div class="inner">
+    <h2>SCRIVI</h2>
+
+    <div class="lyrics-flip-wrap">
+      <img
+  id="lyricsFlipImage"
+  src="Notebook1.png"
+  alt="Notebook lyrics image"
+  class="lyrics-flip-img"
+>
+    </div>
+
+      </div>
 </section>
-
-  <div class="col">
-    <!-- LEFT COLUMN: Bio -->
-    <section class="card">
-      <div class="inner">
-        <h2>Bio</h2>
-        <p class="muted bio-text">
-          <span class="glitch" data-text="parole tristi in canzoni distorte">parole tristi in canzoni distorte</span>
-          <br/><br/>
-          siamo i Vertebra - alternative rock romano dal 2022<br>vogliamo suonare nella vostra città - siete pronti?
-        </p>
-
-        <div class="cta">
-          <strong>COSA CERCHIAMO</strong>
-          <div class="muted">
-            Cerchiamo collaboratori di ogni tipo: locali dove suonare, servizi booking, ed etichette discografiche.
-          </div>
-          <a href="#contact" aria-label="Jump to contact section">CONTATTACI →</a>
         </div>
-      </div>
-    </section>
 
-    <!-- LEFT COLUMN: Upcoming -->
-    <section class="card">
-      <div class="inner">
-        <h2>Prossime uscite</h2>
-        <div class="ep-stack">
 
-          <div class="ep">
-            <div class="cover">
-              <img src="Oramai.jpeg" alt="Ora/mai" class="cover-img clickable-cover">
-            </div>
 
-            <div class="ep-text">
-              <div class="muted" style="font-style:italic;">
-               20 Marzo 2026 — il prossimo singolo
+        <div class="col">
+          <section class="card">
+            <div class="inner">
+              <h2>Band</h2>
+
+              <div class="photo" aria-label="Band photo">
+                <img src="Couch sip.jpeg" alt="Vertebra band photo" class="photo-img clickable-cover">
               </div>
 
-              <div style="font-weight:900; margin-top:6px;">
-                Ora/mai
+              <div class="slideshow" aria-label="Photo slideshow">
+                <h2 style="margin-top:0;">Foto</h2>
+
+                <div class="slide-stage" id="slideStage">
+                  <div class="slide active">
+                    <img src="Live 1.JPG" alt="Live photo 1" class="slide-img clickable-cover">
+                  </div>
+                  <div class="slide">
+                    <img src="Blurry couch.jpeg" alt="Studio photo 1" class="slide-img clickable-cover">
+                  </div>
+                  <div class="slide">
+                    <img src="Live 2.JPG" alt="Live photo 2" class="slide-img clickable-cover">
+                  </div>
+                  <div class="slide">
+                    <img src="Grass couch.jpeg" alt="Studio photo 2" class="slide-img clickable-cover">
+                  </div>
+		  <div class="slide">
+  		    <img src="Live 6.jpg" alt="Live photo 3" class="slide-img top clickable-cover">
+		   </div>
+		  <div class="slide">
+  		    <img src="Studio 4.jpeg" alt="Studio photo 3" class="slide-img clickable-cover">
+		   </div>
+		  <div class="slide">
+  		    <img src="Live 3.jpg" alt="Live photo 4" class="slide-img clickable-cover">
+		   </div>
+		  <div class="slide">
+  		    <img src="Live 4.jpg" alt="Live photo 5" class="slide-img top clickable-cover">
+		   </div>
+		  <div class="slide">
+  		    <img src="Studio 5.jpg" alt="Studio photo 4" class="slide-img clickable-cover">
+		   </div>
+		  <div class="slide">
+  		    <img src="Live 5.jpg" alt="Live photo 6" class="slide-img clickable-cover">
+		   </div>
+                </div>
+
+                <div class="slide-controls">
+                  <button class="btn" id="prevBtn" type="button" aria-label="Previous slide">← Prev</button>
+                  <div class="small" id="slideLabel" aria-live="polite">1 / 4</div>
+                  <button class="btn" id="nextBtn" type="button" aria-label="Next slide">Next →</button>
+                </div>
               </div>
-
-              <a href="https://distrokid.com/hyperfollow/vertebra2/oramai" target="_blank" rel="noopener">
-                Ascolta su Spotify →
-              </a>
             </div>
-          </div>
+          </section>
 
-          <div class="ep">
-            <div class="cover">
-              <img src="Esattamente bene così.jpeg" alt="Esattamente bene così EP cover" class="cover-img clickable-cover">
+          <section class="card">
+            <div class="inner">
+              <h2>Spotify</h2>
+
+              <iframe data-testid="embed-iframe"
+                style="border-radius:12px"
+                src="https://open.spotify.com/embed/artist/0IWsEfkoHuM7gXc1yerLNs?utm_source=generator"
+                width="100%" height="352" frameborder="0"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"></iframe>
             </div>
-
-            <div class="ep-text">
-              <div class="muted" style="font-style:italic;">
-                18 Aprile 2026 — il nostro primo EP
-              </div>
-
-              <div style="font-weight:900; margin-top:6px;">
-                Esattamente bene così
-              </div>
-
-              <a href="https://open.spotify.com/album/42rUJO7bwc7HNg5FYNZyBk" target="_blank" rel="noopener">
-                Ascolta su Spotify →
-              </a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div class="col">
-    <!-- RIGHT COLUMN: Band -->
-    <section class="card">
-      <div class="inner">
-        <h2>Band</h2>
-
-        <div class="photo" aria-label="Band photo">
-          <img src="Couch sip.jpeg" alt="Vertebra band photo" class="photo-img">
+          </section>
         </div>
 
-        <div class="slideshow" aria-label="Photo slideshow">
-          <h2 style="margin-top:0;">Foto</h2>
-
-          <div class="slide-stage" id="slideStage">
-            <div class="slide active">
-              <img src="Live 1.JPG" alt="Live photo 1" class="slide-img">
-            </div>
-            <div class="slide">
-              <img src="Blurry couch.jpeg" alt="Studio photo 1" class="slide-img">
-            </div>
-            <div class="slide">
-              <img src="Live 2.JPG" alt="Live photo 2" class="slide-img">
-            </div>
-            <div class="slide">
-              <img src="Grass couch.jpeg" alt="Studio photo 2" class="slide-img">
-            </div>
-          </div>
-
-          <div class="slide-controls">
-            <button class="btn" id="prevBtn" type="button" aria-label="Previous slide">← Prev</button>
-            <div class="small" id="slideLabel" aria-live="polite">1 / 4</div>
-            <button class="btn" id="nextBtn" type="button" aria-label="Next slide">Next →</button>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div class="pair-row">
-    <!-- LEFT COLUMN: Ascolta -->
-    <section class="card">
-      <div class="inner">
-        <h2>Ascolta</h2>
-
-        <div class="custom-player" aria-label="Custom audio player">
-          <div class="cp-now">
-            <div class="cp-title" id="cpTitle"></div>
-            <div class="cp-meta" id="cpMeta"></div>
-          </div>
-
-          <div class="cp-controls">
-            <button class="cp-btn" id="cpPrev" type="button">←</button>
-            <button class="cp-btn cp-play" id="cpPlay" type="button">▶</button>
-            <button class="cp-btn" id="cpNext" type="button">→</button>
-
-            <div class="cp-time">
-              <span id="cpCur">0:00</span>
-              <input id="cpSeek" type="range" min="0" max="100" value="0" step="1" aria-label="Seek">
-              <span id="cpDur">0:00</span>
-            </div>
-          </div>
-
-          <div class="cp-list" id="cpList" aria-label="Track list"></div>
-          <audio id="cpAudio" preload="metadata"></audio>
-        </div>
-      </div>
-    </section>
-
-    <!-- RIGHT COLUMN: Spotify -->
-    <section class="card">
-      <div class="inner">
-        <h2>Spotify</h2>
-
-        <iframe data-testid="embed-iframe"
-          style="border-radius:12px"
-          src="https://open.spotify.com/embed/artist/0IWsEfkoHuM7gXc1yerLNs?utm_source=generator"
-          width="100%" height="352" frameborder="0"
-          allowfullscreen=""
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"></iframe>
-      </div>
-    </section>
-  </div>
-</main>
+      </main>
 
       <footer class="footer" id="contact" aria-label="Contact links">
         <div class="social-icons">
@@ -1192,39 +1205,25 @@ data-track="fretta">
           © <span id="year"></span> — Vertebra
         </div>
       </footer>
-
-
-
     </div>
   </section>
 
-
-
   <script>
-    /* =========================================================
-       PAGE 1: Loading + static GIF fade (NEW)
-       ========================================================= */
     const page1 = document.getElementById('page1');
     const page2 = document.getElementById('page2');
 
     const tvButton = document.getElementById('tvButton');
     const pctEl = document.getElementById('pct');
     const barEl = document.getElementById('bar');
-
-    // NEW: the fading static GIF
     const tvStatic = document.getElementById('tvStatic');
 
     let pct = 0;
     let loaded = false;
 
     function setStaticIntensity(intensity01){
-      // intensity01: 1 = full static, 0 = no static
       const n = Math.max(0, Math.min(1, intensity01));
-
-      // Keep some static always visible:
-      const minStatic = 0.18; // <-- adjust (0.10 subtle, 0.25 heavier)
+      const minStatic = 0.18;
       const opacity = minStatic + n * (1 - minStatic);
-
       if (tvStatic) tvStatic.style.opacity = opacity.toFixed(3);
     }
 
@@ -1235,18 +1234,15 @@ data-track="fretta">
       pctEl.textContent = pct + '%';
       barEl.style.width = pct + '%';
 
-      // As pct increases, intensity decreases
       const intensity = 1 - (pct / 100);
       setStaticIntensity(intensity);
 
       if(pct >= 100){
         loaded = true;
-        // lock at minimum static visibility
         setStaticIntensity(0);
       }
     }
 
-    // Start with full static
     setStaticIntensity(1);
 
     const loadingInterval = setInterval(() => {
@@ -1254,14 +1250,10 @@ data-track="fretta">
       if(loaded) clearInterval(loadingInterval);
     }, 60);
 
-    // Enter site on click (no auto-enter)
     function enterSite(){
       page1.classList.remove('active');
       page2.classList.add('active');
-
-      // optional: ensure static is at minimum before leaving
       setStaticIntensity(0);
-
       page2.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -1270,9 +1262,6 @@ data-track="fretta">
       if(e.key === 'Enter' || e.key === ' ') enterSite();
     });
 
-    /* =========================================================
-       PAGE 2: Slideshow
-       ========================================================= */
     const slides = Array.from(document.querySelectorAll('.slide-stage .slide'));
     const slideLabel = document.getElementById('slideLabel');
     const prevBtn = document.getElementById('prevBtn');
@@ -1286,151 +1275,45 @@ data-track="fretta">
       slideLabel.textContent = `${idx + 1} / ${slides.length}`;
     }
 
-    prevBtn.addEventListener('click', () => show(idx - 1));
-    nextBtn.addEventListener('click', () => show(idx + 1));
+const slideDelay = 4500;   // change this if you want it slower/faster
+let slideInterval = null;
+let slideshowPaused = false;
 
-    setInterval(() => {
-      if(page2.classList.contains('active')) show(idx + 1);
-    }, 4500);
+function startSlideInterval(){
+  stopSlideInterval();
+  if(slideshowPaused) return;
+
+  slideInterval = setInterval(() => {
+    if(page2.classList.contains('active') && !slideshowPaused){
+      show(idx + 1);
+    }
+  }, slideDelay);
+}
+
+function stopSlideInterval(){
+  if(slideInterval){
+    clearInterval(slideInterval);
+    slideInterval = null;
+  }
+}
+
+function resetSlideInterval(){
+  startSlideInterval();
+}
+
+prevBtn.addEventListener('click', () => {
+  show(idx - 1);
+  resetSlideInterval();
+});
+
+nextBtn.addEventListener('click', () => {
+  show(idx + 1);
+  resetSlideInterval();
+});
+
+startSlideInterval();
 
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // ===== Custom Audio Player =====
-    const tracks = [
-      { title: "Tutta questa fretta", artist: "Vertebra", src: "Vertebra - Tutta questa fretta.mp3" },
-      { title: "Ben oltre", artist: "Vertebra", src: "Vertebra - Ben oltre.mp3" },
-      { title: "Quel momento che", artist: "Vertebra", src: "Vertebra - Quel momento che.mp3" }
-    ];
-
-    const cpAudio = document.getElementById("cpAudio");
-    const cpTitleEl = document.getElementById("cpTitle");
-    const cpMetaEl = document.getElementById("cpMeta");
-    const cpPlayBtn = document.getElementById("cpPlay");
-    const cpPrevBtn = document.getElementById("cpPrev");
-    const cpNextBtn = document.getElementById("cpNext");
-    const cpSeek = document.getElementById("cpSeek");
-    const cpCurEl = document.getElementById("cpCur");
-    const cpDurEl = document.getElementById("cpDur");
-    const cpListEl = document.getElementById("cpList");
-
-    let trackIdx = 0;
-
-    function cpFmt(t){
-      if (!Number.isFinite(t)) return "0:00";
-      const m = Math.floor(t / 60);
-      const s = Math.floor(t % 60);
-      return `${m}:${String(s).padStart(2,"0")}`;
-    }
-
-    function escAttr(s){
-      return String(s).replaceAll('"','&quot;');
-    }
-
-    function cpRenderList(){
-      if (!cpListEl) return;
-      cpListEl.innerHTML = "";
-
-      tracks.forEach((tr, i) => {
-        const row = document.createElement("div");
-        row.className = "cp-track" + (i === trackIdx ? " active" : "");
-
-        row.innerHTML = `
-          <div>
-            <div class="cp-track-title">
-              ${
-                i === trackIdx
-                  ? `<span class="glitch" data-text="${escAttr(tr.title)}">${tr.title}</span>`
-                  : tr.title
-              }
-            </div>
-            <small class="cp-meta">${tr.artist}</small>
-          </div>
-        `;
-
-        row.addEventListener("click", () => cpLoad(i, true));
-        cpListEl.appendChild(row);
-      });
-    }
-
-    function cpSetNowPlaying(tr, isPlaying){
-      if (isPlaying){
-        cpTitleEl.innerHTML = `<span class="glitch" data-text="${escAttr(tr.title)}">${tr.title}</span>`;
-      } else {
-        cpTitleEl.textContent = tr.title;
-      }
-      cpMetaEl.textContent = tr.artist;
-    }
-
-    function cpLoad(i, autoplay=false){
-      trackIdx = (i + tracks.length) % tracks.length;
-      const tr = tracks[trackIdx];
-
-      cpAudio.src = tr.src;
-      cpSeek.value = "0";
-      cpCurEl.textContent = "0:00";
-      cpDurEl.textContent = "0:00";
-
-      cpSetNowPlaying(tr, false);
-      cpPlayBtn.textContent = "▶";
-
-      cpRenderList();
-
-      if (autoplay){
-        cpAudio.play()
-          .then(() => {
-            cpPlayBtn.textContent = "❚❚";
-            cpSetNowPlaying(tr, true);
-            cpRenderList();
-          })
-          .catch((err) => console.log("Play blocked:", err));
-      }
-    }
-
-    if (cpAudio && cpTitleEl && cpMetaEl && cpPlayBtn && cpPrevBtn && cpNextBtn && cpSeek && cpCurEl && cpDurEl && cpListEl){
-      cpPlayBtn.addEventListener("click", () => {
-        const tr = tracks[trackIdx];
-
-        if (cpAudio.paused){
-          cpAudio.play()
-            .then(() => {
-              cpPlayBtn.textContent = "❚❚";
-              cpSetNowPlaying(tr, true);
-              cpRenderList();
-            })
-            .catch((err) => console.log("Play blocked:", err));
-        } else {
-          cpAudio.pause();
-          cpPlayBtn.textContent = "▶";
-          cpSetNowPlaying(tr, false);
-          cpRenderList();
-        }
-      });
-
-      cpPrevBtn.addEventListener("click", () => cpLoad(trackIdx - 1, true));
-      cpNextBtn.addEventListener("click", () => cpLoad(trackIdx + 1, true));
-
-      cpAudio.addEventListener("loadedmetadata", () => {
-        cpDurEl.textContent = cpFmt(cpAudio.duration);
-      });
-
-      cpAudio.addEventListener("timeupdate", () => {
-        if (Number.isFinite(cpAudio.duration) && cpAudio.duration > 0){
-          cpSeek.value = String(Math.floor((cpAudio.currentTime / cpAudio.duration) * 100));
-        }
-        cpCurEl.textContent = cpFmt(cpAudio.currentTime);
-      });
-
-      cpSeek.addEventListener("input", () => {
-        if (Number.isFinite(cpAudio.duration) && cpAudio.duration > 0){
-          cpAudio.currentTime = (Number(cpSeek.value) / 100) * cpAudio.duration;
-        }
-      });
-
-      cpAudio.addEventListener("ended", () => cpLoad(trackIdx + 1, true));
-
-      cpLoad(0, false);
-      cpRenderList();
-    }
   </script>
 
   <div id="imageModal" class="image-modal">
@@ -1444,351 +1327,487 @@ data-track="fretta">
     const closeModal = document.getElementById('closeModal');
     const covers = document.querySelectorAll('.clickable-cover');
 
-    covers.forEach(cover => {
-      cover.addEventListener('click', () => {
-        modalImage.src = cover.src;
-        modalImage.alt = cover.alt;
-        modal.classList.add('open');
+covers.forEach(img => {
+  img.addEventListener('click', (e) => {
+    modalImage.src = e.target.src;
+    modalImage.alt = e.target.alt;
+    modal.classList.add('open');
+
+    slideshowPaused = true;
+    stopSlideInterval();
+  });
+});
+
+closeModal.addEventListener('click', () => {
+  modal.classList.remove('open');
+  modalImage.src = '';
+
+  slideshowPaused = false;
+  startSlideInterval();
+});
+
+    modal.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    modal.classList.remove('open');
+    modalImage.src = '';
+
+    slideshowPaused = false;
+    startSlideInterval();
+  }
+});
+
+    document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.classList.contains('open')) {
+    modal.classList.remove('open');
+    modalImage.src = '';
+
+    slideshowPaused = false;
+    startSlideInterval();
+  }
+});
+  </script>
+
+  <script>
+    const area = document.getElementById("cdArea");
+    const player = document.getElementById("playerImage");
+    const lid = document.getElementById("lidZone");
+    const discZone = document.getElementById("discZone");
+    const closedZone = document.getElementById("closedZone");
+
+    const isMobile = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
+
+    const cdNowTitle = document.getElementById("cdNowTitle");
+    const cdNowArtist = document.getElementById("cdNowArtist");
+    const cdNowSeek = document.getElementById("cdNowSeek");
+    const cdNowCur = document.getElementById("cdNowCur");
+    const cdNowDur = document.getElementById("cdNowDur");
+
+    const discs = document.querySelectorAll(".disc");
+    const savedPositions = {};
+
+    let state = "open-empty";
+    let loadedTrack = null;
+
+    const playerImages = {
+      open:"cd-player-open-trans.png",
+      closed:"cd-player-closed-trans.png",
+      benoltre:"cd-player-loaded-ben-oltre-trans.png",
+      quel:"cd-player-loaded-quel-momento-che-trans.png",
+      fretta:"cd-player-loaded-tutta-questa-fretta-trans.png"
+    };
+
+    const audio = {
+      benoltre:document.getElementById("track-benoltre"),
+      quel:document.getElementById("track-quel"),
+      fretta:document.getElementById("track-fretta")
+    };
+
+    function updatePlayerZones(){
+      if(state === "open-empty"){
+        lid.style.display = "none";
+        discZone.style.display = "block";
+        closedZone.style.display = "none";
+        return;
+      }
+
+      if(state === "loaded"){
+        lid.style.display = "block";
+        discZone.style.display = "block";
+        closedZone.style.display = "none";
+        return;
+      }
+
+      if(state === "closed"){
+        lid.style.display = "none";
+        discZone.style.display = "none";
+        closedZone.style.display = "block";
+      }
+    }
+
+    function saveDiscPosition(disc){
+      savedPositions[disc.id] = {
+        left: disc.style.left,
+        top: disc.style.top
+      };
+    }
+
+    function restoreDiscPosition(disc){
+      const pos = savedPositions[disc.id];
+      if(!pos) return;
+      disc.style.left = pos.left;
+      disc.style.top = pos.top;
+    }
+
+    window.addEventListener("load", () => {
+      discs.forEach(disc => {
+        saveDiscPosition(disc);
       });
     });
 
-    closeModal.addEventListener('click', () => {
-      modal.classList.remove('open');
-      modalImage.src = '';
+    function fmtTime(t){
+      if(!Number.isFinite(t)) return "0:00";
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60);
+      return `${m}:${String(s).padStart(2,"0")}`;
+    }
+
+    function currentTrackAudio(){
+      return loadedTrack ? audio[loadedTrack] : null;
+    }
+
+    function currentTrackTitle(){
+      if(loadedTrack === "benoltre") return "Ben oltre";
+      if(loadedTrack === "quel") return "Quel momento che";
+      if(loadedTrack === "fretta") return "Tutta questa fretta";
+      return "";
+    }
+
+    function updateNowBar(){
+      const trAudio = currentTrackAudio();
+      const title = currentTrackTitle();
+
+      if(state === "open-empty" || !loadedTrack || !trAudio){
+  cdNowTitle.className = "cd-now-title";
+  cdNowTitle.removeAttribute("data-text");
+  cdNowTitle.textContent = "";
+  cdNowArtist.textContent = "";
+  cdNowCur.textContent = "0:00";
+  cdNowDur.textContent = "0:00";
+  cdNowSeek.value = 0;
+
+  cdNowSeek.style.background =
+    `linear-gradient(to right, #fff 0%, #fff 0%, #000 0%, #000 100%)`;
+
+  return;
+}
+
+      if(state === "loaded"){
+        cdNowTitle.className = "cd-now-title";
+        cdNowTitle.removeAttribute("data-text");
+        cdNowTitle.textContent = title;
+      }
+
+      if(state === "closed"){
+        cdNowTitle.className = "cd-now-title glitch";
+        cdNowTitle.setAttribute("data-text", title);
+        cdNowTitle.textContent = title;
+      }
+
+      cdNowArtist.textContent = "Vertebra";
+      cdNowCur.textContent = fmtTime(trAudio.currentTime);
+      cdNowDur.textContent = fmtTime(trAudio.duration);
+
+      if(Number.isFinite(trAudio.duration) && trAudio.duration > 0){
+
+  const percent = (trAudio.currentTime / trAudio.duration) * 100
+
+  cdNowSeek.value = percent
+
+  cdNowSeek.style.background =
+    `linear-gradient(to right,
+      #fff 0%,
+      #fff ${percent}%,
+      #000 ${percent}%,
+      #000 100%)`
+
+}else{
+
+  cdNowSeek.value = 0
+
+  cdNowSeek.style.background =
+    `linear-gradient(to right,
+      #fff 0%,
+      #fff 0%,
+      #000 0%,
+      #000 100%)`
+}
+    }
+
+    Object.values(audio).forEach(a => {
+      a.addEventListener("loadedmetadata", updateNowBar);
+      a.addEventListener("timeupdate", updateNowBar);
+      a.addEventListener("ended", () => {
+        state = "loaded";
+        a.pause();
+        a.currentTime = 0;
+        player.src = playerImages[loadedTrack];
+        updatePlayerZones();
+        updateNowBar();
+      });
     });
 
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.remove('open');
-        modalImage.src = '';
-      }
+    cdNowSeek.addEventListener("input", () => {
+      const trAudio = currentTrackAudio();
+      if(!trAudio) return;
+      if(!Number.isFinite(trAudio.duration) || trAudio.duration <= 0) return;
+
+      trAudio.currentTime = (Number(cdNowSeek.value) / 100) * trAudio.duration;
+      updateNowBar();
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        modal.classList.remove('open');
-        modalImage.src = '';
+    discs.forEach(disc => {
+      disc.ondragstart = () => false;
+
+      if(isMobile){
+        disc.addEventListener("click", () => {
+          if(state !== "open-empty") return;
+
+          const track = disc.dataset.track;
+          disc.style.display = "none";
+          loadedTrack = track;
+          state = "loaded";
+
+          audio[track].currentTime = 0;
+          player.src = playerImages[track];
+          updatePlayerZones();
+          updateNowBar();
+        });
+
+        return;
       }
+
+      let dragging = false;
+      let offsetX = 0;
+      let offsetY = 0;
+      let startLeft = "";
+      let startTop = "";
+
+      disc.addEventListener("pointerdown", e => {
+        startLeft = disc.style.left;
+        startTop = disc.style.top;
+        dragging = true;
+        disc.setPointerCapture(e.pointerId);
+
+        const rect = disc.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+      });
+
+      disc.addEventListener("pointermove", e => {
+        if(!dragging) return;
+
+        const areaRect = area.getBoundingClientRect();
+        let x = e.clientX - areaRect.left - offsetX;
+        let y = e.clientY - areaRect.top - offsetY;
+
+        disc.style.left = x + "px";
+        disc.style.top = y + "px";
+      });
+
+      disc.addEventListener("pointerup", () => {
+        dragging = false;
+
+        keepInsideArea(disc);
+
+        const result = checkDrop(disc);
+
+        if(result === "loaded"){
+          return;
+        }
+
+        if(result === "rejected"){
+          disc.style.left = startLeft;
+          disc.style.top = startTop;
+          return;
+        }
+
+        saveDiscPosition(disc);
+      });
+
+      disc.addEventListener("dblclick", () => {
+        if(state !== "open-empty") return;
+
+        const track = disc.dataset.track;
+        disc.style.display = "none";
+        loadedTrack = track;
+        state = "loaded";
+
+        audio[track].currentTime = 0;
+        player.src = playerImages[track];
+        updatePlayerZones();
+        updateNowBar();
+      });
     });
+
+    function keepInsideArea(disc){
+      const areaRect = area.getBoundingClientRect();
+
+      let left = disc.offsetLeft;
+      let top = disc.offsetTop;
+
+      const maxX = areaRect.width - disc.offsetWidth;
+      const maxY = areaRect.height - disc.offsetHeight;
+
+      if(left < 0) left = 0;
+      if(top < 0) top = 0;
+      if(left > maxX) left = maxX;
+      if(top > maxY) top = maxY;
+
+      disc.style.left = left + "px";
+      disc.style.top = top + "px";
+    }
+
+    function checkDrop(disc){
+  const discRect = disc.getBoundingClientRect();
+  const discCenterX = discRect.left + discRect.width / 2;
+  const discCenterY = discRect.top + discRect.height / 2;
+
+  /* how "sensitive" the overlap is */
+  const discRadiusX = discRect.width * 0.32;
+  const discRadiusY = discRect.height * 0.32;
+
+  function discOverlapsEllipse(zoneRect, cxRatio, cyRatio, rxRatio, ryRatio){
+    const ellipseCenterX = zoneRect.left + zoneRect.width * cxRatio;
+    const ellipseCenterY = zoneRect.top + zoneRect.height * cyRatio;
+
+    /* expand the zone by the disc radius */
+    const radiusX = zoneRect.width * rxRatio + discRadiusX;
+    const radiusY = zoneRect.height * ryRatio + discRadiusY;
+
+    const dx = discCenterX - ellipseCenterX;
+    const dy = discCenterY - ellipseCenterY;
+
+    return ((dx * dx) / (radiusX * radiusX)) +
+           ((dy * dy) / (radiusY * radiusY)) <= 1;
+  }
+
+  if(state === "loaded"){
+    const lidRect = lid.getBoundingClientRect();
+    if(discOverlapsEllipse(lidRect, 0.5, 0.5, 0.5, 0.5)){
+      return "rejected";
+    }
+  }
+
+  if(state === "closed"){
+    const zoneRect = closedZone.getBoundingClientRect();
+
+    if(discOverlapsEllipse(zoneRect, 0.50, 0.50, 0.48, 0.46)){
+      return "rejected";
+    }
+
+    return "none";
+  }
+
+  const zoneRect = discZone.getBoundingClientRect();
+  const insideDiscZone = discOverlapsEllipse(zoneRect, 0.50, 0.40, 0.50, 0.46);
+
+  if(!insideDiscZone) return "none";
+
+  if(state === "open-empty"){
+    const track = disc.dataset.track;
+
+    disc.style.display = "none";
+    loadedTrack = track;
+    state = "loaded";
+
+    audio[track].currentTime = 0;
+    player.src = playerImages[track];
+    updatePlayerZones();
+    updateNowBar();
+    return "loaded";
+  }
+
+  if(state === "loaded"){
+    return "rejected";
+  }
+
+  return "none";
+}
+
+    lid.onclick = (e) => {
+      e.stopPropagation();
+
+      if(state !== "loaded") return;
+
+      player.src = playerImages.closed;
+      audio[loadedTrack].play();
+      state = "closed";
+      updatePlayerZones();
+      updateNowBar();
+    };
+
+    closedZone.onclick = (e) => {
+      e.stopPropagation();
+
+      if(state !== "closed") return;
+
+      audio[loadedTrack].pause();
+      audio[loadedTrack].currentTime = 0;
+      player.src = playerImages[loadedTrack];
+      state = "loaded";
+      updatePlayerZones();
+      updateNowBar();
+    };
+
+    discZone.onclick = (e) => {
+      e.stopPropagation();
+
+      if(state !== "loaded") return;
+
+      const disc = document.querySelector(`[data-track="${loadedTrack}"]`);
+
+      disc.style.display = "block";
+      disc.style.left = "";
+      disc.style.top = "";
+      saveDiscPosition(disc);
+
+      audio.benoltre.pause();
+      audio.benoltre.currentTime = 0;
+      audio.quel.pause();
+      audio.quel.currentTime = 0;
+      audio.fretta.pause();
+      audio.fretta.currentTime = 0;
+
+      player.src = playerImages.open;
+      loadedTrack = null;
+      state = "open-empty";
+      updatePlayerZones();
+      updateNowBar();
+    };
+
+    updatePlayerZones();
+    updateNowBar();
   </script>
 
 <script>
-
-/* INTERACTIVE CD PLAYER */
-
-const area = document.getElementById("cdArea")
-const player = document.getElementById("playerImage")
-const cdPlayer = document.querySelector(".cd-player")
-const tray = document.getElementById("trayZone")
-const lid = document.getElementById("lidZone")
-const discZone = document.getElementById("discZone")
-
-const closedZone = document.getElementById("closedZone")
-const isMobile = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
-
-function updatePlayerZones(){
-if(state === "open-empty"){
-  lid.style.display = "none"
-  discZone.style.display = "block"
-  closedZone.style.display = "none"
-  return
-}
-
-  if(state === "loaded"){
-    lid.style.display = "block"
-    discZone.style.display = "block"
-    closedZone.style.display = "none"
-    return
-  }
-
-  if(state === "closed"){
-    lid.style.display = "none"
-    discZone.style.display = "none"
-    closedZone.style.display = "block"
-  }
-}
-
-const discs = document.querySelectorAll(".disc")
-
-const savedPositions = {}
-
-function saveDiscPosition(disc){
-  savedPositions[disc.id] = {
-    left: disc.style.left,
-    top: disc.style.top
-  }
-}
-
-function restoreDiscPosition(disc){
-  const pos = savedPositions[disc.id]
-  if(!pos) return
-  disc.style.left = pos.left
-  disc.style.top = pos.top
-}
-
-let state = "open-empty"
-let loadedTrack = null
-
-const playerImages = {
-open:"cd-player-open-trans.png",
-closed:"cd-player-closed-trans.png",
-benoltre:"cd-player-loaded-ben-oltre-trans.png",
-quel:"cd-player-loaded-quel-momento-che-trans.png",
-fretta:"cd-player-loaded-tutta-questa-fretta-trans.png"
-}
-
-const audio = {
-benoltre:document.getElementById("track-benoltre"),
-quel:document.getElementById("track-quel"),
-fretta:document.getElementById("track-fretta")
-}
-
-window.addEventListener("load", () => {
-  discs.forEach(disc => {
-    saveDiscPosition(disc)
-  })
-})
-
-/* DRAG SYSTEM */
-
-discs.forEach(disc => {
-
-  disc.ondragstart = () => false
-
-  if(isMobile){
-    disc.addEventListener("click", () => {
-
-      if(state !== "open-empty") return
-
-      const track = disc.dataset.track
-
-      disc.style.display = "none"
-      loadedTrack = track
-      state = "loaded"
-
-      player.src = playerImages[track]
-      updatePlayerZones()
-    })
-
-    return
-  }
-
-  let dragging=false
-  let offsetX=0
-  let offsetY=0
-  let startLeft=""
-  let startTop=""
-
-  disc.addEventListener("pointerdown",e=>{
-
-    startLeft = disc.style.left
-    startTop = disc.style.top
-
-    dragging=true
-    disc.setPointerCapture(e.pointerId)
-
-    const rect=disc.getBoundingClientRect()
-
-    offsetX=e.clientX-rect.left
-    offsetY=e.clientY-rect.top
-
-  })
-
-  disc.addEventListener("pointermove",e=>{
-
-    if(!dragging)return
-
-    const areaRect=area.getBoundingClientRect()
-
-    let x=e.clientX-areaRect.left-offsetX
-    let y=e.clientY-areaRect.top-offsetY
-
-    disc.style.left=x+"px"
-    disc.style.top=y+"px"
-
-  })
-
-  disc.addEventListener("pointerup",()=>{
-
-    dragging=false
-
-    keepInsideArea(disc)
-
-    const result = checkDrop(disc)
-
-    if(result === "loaded"){
-      return
-    }
-
-    if(result === "rejected"){
-      disc.style.left = startLeft
-      disc.style.top = startTop
-      return
-    }
-
-    saveDiscPosition(disc)
-
-  })
-
-  disc.addEventListener("dblclick",()=>{
-
-    if(state !== "open-empty") return
-
-    const track = disc.dataset.track
-
-    disc.style.display = "none"
-
-    loadedTrack = track
-    state = "loaded"
-
-    player.src = playerImages[track]
-    updatePlayerZones()
-
-  })
-
-})
-function keepInsideArea(disc){
-
-const areaRect=area.getBoundingClientRect()
-
-let left=disc.offsetLeft
-let top=disc.offsetTop
-
-const maxX=areaRect.width-disc.offsetWidth
-const maxY=areaRect.height-disc.offsetHeight
-
-if(left<0)left=0
-if(top<0)top=0
-
-if(left>maxX)left=maxX
-if(top>maxY)top=maxY
-
-disc.style.left=left+"px"
-disc.style.top=top+"px"
-
-}
-
-/* DROP DETECTION */
-
-function checkDrop(disc){
-
-  const discRect = disc.getBoundingClientRect()
-  const discCenterX = discRect.left + discRect.width / 2
-  const discCenterY = discRect.top + discRect.height / 2
-
-  // ----- helper: point inside ellipse -----
-  function pointInsideEllipse(zoneRect, cxRatio, cyRatio, rxRatio, ryRatio){
-    const ellipseCenterX = zoneRect.left + zoneRect.width * cxRatio
-    const ellipseCenterY = zoneRect.top + zoneRect.height * cyRatio
-    const radiusX = zoneRect.width * rxRatio
-    const radiusY = zoneRect.height * ryRatio
-
-    const dx = discCenterX - ellipseCenterX
-    const dy = discCenterY - ellipseCenterY
-
-    return ((dx * dx) / (radiusX * radiusX)) +
-           ((dy * dy) / (radiusY * radiusY)) <= 1
-  }
-
-  // ----- reject discs over the lid zone in State 2 -----
-  if(state === "loaded"){
-    const lidRect = lid.getBoundingClientRect()
-
-    if(pointInsideEllipse(lidRect, 0.5, 0.5, 0.5, 0.5)){
-      return "rejected"
+  const lyricsFlipImage = document.getElementById('lyricsFlipImage');
+
+  const lyricsImages = [
+    'Notebook1.png',
+    'Notebook2.png',
+    'Notebook3.png',
+    'Notebook4.png',
+    'Notebook5.png',
+    'Notebook6.png',
+    'Notebook7.png',
+    'Notebook8.png',
+    'Notebook9.png',
+    'Notebook10.png',
+    'Notebook11.png',
+    'Notebook12.png'
+  ];
+
+  let lyricsIndex = 0;
+
+  function updateLyricsFlip(){
+    lyricsFlipImage.src = lyricsImages[lyricsIndex];
+    lyricsFlipImage.alt = `Notebook lyrics image ${lyricsIndex + 1}`;
+
+    if(lyricsIndex >= lyricsImages.length - 1){
+      lyricsFlipImage.classList.add('done');
+    } else {
+      lyricsFlipImage.classList.remove('done');
     }
   }
 
-  // ----- CLOSED STATE: reject discs dropped onto closed player -----
-  if(state === "closed"){
-    const zoneRect = closedZone.getBoundingClientRect()
+  lyricsFlipImage.addEventListener('click', () => {
+    if(lyricsIndex >= lyricsImages.length - 1) return;
 
-    if(pointInsideEllipse(zoneRect, 0.50, 0.50, 0.48, 0.46)){
-      return "rejected"
-    }
+    lyricsIndex += 1;
+    updateLyricsFlip();
+  });
 
-    return "none"
-  }
-
-  // ----- OPEN / LOADED STATES: use the disc zone -----
-  const zoneRect = discZone.getBoundingClientRect()
-  const insideDiscZone = pointInsideEllipse(zoneRect, 0.50, 0.40, 0.50, 0.46)
-
-  if(!insideDiscZone) return "none"
-
-  if(state === "open-empty"){
-    const track = disc.dataset.track
-
-    disc.style.display = "none"
-
-    loadedTrack = track
-    state = "loaded"
-
-    player.src = playerImages[track]
-    updatePlayerZones()
-    return "loaded"
-  }
-
-  if(state === "loaded"){
-    return "rejected"
-  }
-
-  return "none"
-}
-/* CLOSE LID */
-
-lid.onclick=(e)=>{
-
-  e.stopPropagation()
-
-  if(state !== "loaded") return
-
-  player.src = playerImages.closed
-  audio[loadedTrack].play()
-  state = "closed"
-  updatePlayerZones()
-}
-
-/* OPEN PLAYER */
-
-closedZone.onclick=(e)=>{
-
-  e.stopPropagation()
-
-  if(state !== "closed") return
-
-  audio[loadedTrack].pause()
-  audio[loadedTrack].currentTime = 0
-
-  player.src = playerImages[loadedTrack]
-  state = "loaded"
-  updatePlayerZones()
-}
-
-/* EJECT DISC */
-
-discZone.onclick=(e)=>{
-
-  e.stopPropagation()
-
-  if(state !== "loaded") return
-
-  const disc = document.querySelector(`[data-track="${loadedTrack}"]`)
-
-  disc.style.display = "block"
-  disc.style.left = ""
-  disc.style.top = ""
-saveDiscPosition(disc)
-
-  player.src = playerImages.open
-
-  loadedTrack = null
-  state = "open-empty"
-  updatePlayerZones()
-}
-updatePlayerZones()
-
-
+  updateLyricsFlip();
 </script>
 
 </body>
