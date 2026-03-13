@@ -1162,7 +1162,7 @@ pointer-events:none;
 
                 <div class="slide-controls">
                   <button class="btn" id="prevBtn" type="button" aria-label="Previous slide">← Prev</button>
-                  <div class="small" id="slideLabel" aria-live="polite">1 / 4</div>
+                  <div class="small" id="slideLabel" aria-live="polite"></div>
                   <button class="btn" id="nextBtn" type="button" aria-label="Next slide">Next →</button>
                 </div>
               </div>
@@ -1268,6 +1268,8 @@ pointer-events:none;
     const nextBtn = document.getElementById('nextBtn');
 
     let idx = 0;
+
+    show(0);
 
     function show(i){
       idx = (i + slides.length) % slides.length;
