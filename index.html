@@ -27,15 +27,16 @@
   object-fit:contain;
   display:block;
 }
-    .tv-mid{
+.tv-mid{
   position:absolute;
   width:70%;
-  height:85%;   /* taller than width */
+  height:70%;
   left:49.5%;
   top:46%;
   transform:translate(-50%,-50%);
-  object-fit:fill;   /* allows stretching */
+  object-fit:fill;
   pointer-events:none;
+  clip-path: inset(0 17% 0 6%);
 }
     .tv-static{
       position:absolute;
@@ -616,12 +617,13 @@ pointer-events:none;
     }
 
     .player-img{
-      width:250px;
-      display:block;
-      user-select:none;
-      -webkit-user-drag:none;
-      pointer-events:none;
-    }
+  width:250px;
+  display:block;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
+  transition: transform .2s ease, filter .2s ease;
+}
 
     .cd-interactive{
       grid-column:1 / -1;
@@ -692,6 +694,11 @@ pointer-events:none;
       touch-action:none;
       -webkit-user-drag:none;
     }
+
+.disc:hover{
+  transform: scale(1.05) rotate(3deg);
+  filter: drop-shadow(0 8px 18px rgba(0,0,0,.6));
+}
 
     #closedZone{
       position:absolute;
@@ -943,7 +950,7 @@ pointer-events:none;
           <div class="tv-frame">
             <div class="screen" aria-hidden="true">
               <img src="RetroTV.png" alt="" class="tv-base">
-              <img src="Logo.gif" alt="" class="tv-mid" id="tvMid">
+              <img src="LogoGlitch.gif" alt="" class="tv-mid" id="tvMid">
               <img src="TVStatic.gif" alt="" class="tv-static" id="tvStatic">
             </div>
 
