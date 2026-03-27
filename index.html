@@ -238,7 +238,7 @@
 
     .tag{
       color: rgba(255,255,255,.7);
-      font-size: 13px;
+      font-size: 15px;
       letter-spacing:.04em;
       text-align:center;
     }
@@ -270,14 +270,14 @@
       padding: 16px;
     }
     .card h2{
-      margin: 0 0 10px;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-weight: 800;
-      font-size: 16px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.9);
-    }
+  margin: 0 0 12px;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.85);
+}
 
     .muted{
       color: rgba(255,255,255,.72);
@@ -413,6 +413,48 @@
       border-radius:12px;
     }
 
+.photo-hover-gif{
+  position:relative;
+}
+
+.photo-hover-overlay{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+  border-radius:12px;
+
+  opacity:0;
+  pointer-events:none;
+
+  transition: opacity .2s ease;
+  will-change: opacity;
+}
+
+.photo-hover-gif:hover .photo-hover-overlay{
+  opacity:1;
+}
+
+.photo-hover-gif:hover .photo-img,
+.photo-hover-gif:hover .photo-hover-overlay{
+  transform: scale(1.03);
+}
+
+.photo-img,
+.photo-hover-overlay{
+  transition: transform .2s ease, opacity .2s ease;
+  transform: scale(1); /* important */
+}
+
+.photo-inner{
+  position:relative;
+  width:100%;
+  height:100%;
+}
+
 .lyrics-flip-wrap{
   padding:18px;
   overflow:hidden;
@@ -507,60 +549,63 @@ pointer-events:none;
     }
 
     .footer{
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: var(--radius);
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
-      box-shadow: 0 12px 34px rgba(0,0,0,.5);
-      display:flex;
-      flex-wrap:wrap;
-      gap: 12px;
-      align-items:center;
-      justify-content:flex-start;
-    }
-    .small{
-      color: rgba(255,255,255,.6);
-      font-size: 12.5px;
-      letter-spacing:.02em;
-    }
+  margin-top: 18px;
+  padding: 6px 16px;
 
-    .social-icons{
-      width:100%;
-      display:flex;
-      justify-content:center;
-      gap:28px;
-      align-items:center;
-    }
-    .social-icons a{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      width:70px;
-      height:70px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-    }
-    .social-icons img{
-      height:50px;
-      width:auto;
-      display:block;
-      image-rendering:auto;
-    }
+  border-radius: var(--radius);
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  box-shadow: 0 12px 34px rgba(0,0,0,.5);
 
-    .icon-instagram{
-      transform: scale(1.4) translateY(1px);
-    }
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items:center;
+}
 
-    .icon-spotify{
-      transform: scale(1.05);
-    }
+.small{
+  color: rgba(255,255,255,.6);
+  font-size: 12.5px;
+  letter-spacing:.02em;
+  grid-column: 1;
+  justify-self: start;
+  align-self: end;
+  transform: translateY(-13px);
+}
 
-    .icon-email{
-      transform: scale(.95) translateY(-1px);
-    }
+.social-icons{
+  grid-column: 2;
+  display:flex;
+  justify-content:center;
+  gap:28px;
+  align-items:center;
+  width:auto;
+  margin:0;
+}
+
+.social-icons a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:82px;
+  height:82px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.03);
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+
+.social-icons img{
+  height:60px;
+  width:auto;
+  display:block;
+  image-rendering:auto;
+}
+
+    .icon-instagram,
+.icon-spotify,
+.icon-email {
+  transform: none;
+}
 
     .social-icons a:hover{
       transform: translateY(-2px);
@@ -615,6 +660,55 @@ pointer-events:none;
       line-height: 1;
       cursor: pointer;
     }
+
+.image-modal-nav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:56px;
+  height:56px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.2);
+  background: rgba(0,0,0,.45);
+  color:#fff;
+  font-size:28px;
+  line-height:1;
+  cursor:pointer;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10000;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+
+.image-modal-nav span{
+  display:inline-block;
+  transform: translateY(-2px);
+}
+
+.image-modal-nav:hover{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.35);
+}
+
+.image-modal-prev{
+  left:24px;
+}
+
+.image-modal-next{
+  right:24px;
+}
+
+.image-modal-nav.show{
+  display:flex;
+}
+
+@media (max-width: 900px){
+  .image-modal-nav,
+  .image-modal-nav.show{
+    display:none !important;
+  }
+}
 
     .player-img{
   width:250px;
@@ -848,7 +942,56 @@ pointer-events:none;
     #disc-fretta{ right:65px; top:190px; }
 
     @media (max-width: 900px){
-      .grid{ grid-template-columns: 1fr; }
+      .grid{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  align-items:stretch;
+}
+
+.col{
+  display:contents;
+}
+
+.footer{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding: 10px 14px;
+  }
+
+  .social-icons{
+    width:auto;
+    margin:0;
+    justify-content:center;
+    gap:18px;
+  }
+
+  .social-icons a{
+    width:72px;
+    height:72px;
+  }
+
+  .social-icons img{
+    height:52px;
+  }
+
+  .small{
+    grid-column:auto;
+    justify-self:auto;
+    align-self:auto;
+    transform:none;
+    text-align:center;
+  }
+
+.cd-interactive{ order:1; }
+.card-bio{ order:2; }
+.card-band{ order:3; }
+.card-releases{ order:4; }
+.card-spotify{ order:5; }
+.card-write{ order:6; }
 
       .cd-interactive{
         grid-column:auto;
@@ -932,6 +1075,175 @@ pointer-events:none;
         transform:translateX(-50%);    
 }
     }
+
+.contact-modal{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  padding:20px;
+}
+
+.contact-modal.open{
+  display:flex;
+}
+
+.contact-box{
+  width:100%;
+  max-width:420px;
+  background: rgba(10,10,10,.95);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:18px;
+  padding:22px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  position: relative; /* ✅ THIS FIXES EVERYTHING */
+
+}
+
+.contact-box h2{
+  margin-top:0;
+  margin-bottom:14px;
+  font-size:16px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.contact-box input,
+.contact-box textarea{
+  width:100%;
+  margin-bottom:12px;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.15);
+  background: rgba(0,0,0,.6);
+  color:#fff;
+  font-family:inherit;
+}
+
+.contact-box textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.contact-box form button[type="submit"]{
+  width:100%;
+  padding:10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.6);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.contact-box form button:hover{
+  transform: translateY(-1px);
+  border-color: rgba(124,255,208,.45);
+  background: rgba(124,255,208,.06);
+  filter:
+    drop-shadow(1px 0 0 rgba(124,255,208,.55))
+    drop-shadow(-1px 0 0 rgba(255,79,216,.45));
+}
+
+.contact-alt-label{
+  margin-top:14px;
+  margin-bottom:8px;
+  font-size:13px;
+  color: rgba(255,255,255,.62);
+  text-align:center;
+}
+
+.contact-alt{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;              /* ⬅️ tighter spacing */
+  padding:8px 10px;      /* ⬅️ slightly smaller */
+
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.5);
+
+  font-size:13px;
+  color: rgba(255,255,255,.75);
+}
+
+.contact-email{
+  font-family: "Courier New", monospace;
+  font-size:12.5px;
+  letter-spacing:.03em;
+  min-width:0;
+}
+
+.copy-email{
+  flex:0 0 auto;
+
+  padding:6px 12px;       /* ⬅️ smaller */
+  border-radius:999px;
+
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.6);
+  color:#fff;
+
+  font-size:12px;
+  font-weight:700;   /* ⬅️ ADD THIS */
+
+  white-space:nowrap;     /* ⬅️ prevents stretching */
+
+  cursor:pointer;
+
+  transition: transform .15s ease, border-color .15s ease, background .15s ease, filter .15s ease;
+}
+
+.copy-email:hover{
+  transform: translateY(-1px);
+  border-color: rgba(124,255,208,.45);
+  background: rgba(124,255,208,.06);
+  filter:
+    drop-shadow(1px 0 0 rgba(124,255,208,.55))
+    drop-shadow(-1px 0 0 rgba(255,79,216,.45));
+}
+
+.contact-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+
+  width:30px;
+  height:30px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background: rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:50%;
+
+  color:#fff;
+  font-size:16px;
+  line-height:1;
+
+  padding:0;
+  min-width:0;
+
+  cursor:pointer;
+  z-index:10;
+  transition: transform .15s ease, border-color .15s ease, background .15s ease, filter .15s ease;
+}
+
+.contact-close:hover{
+  transform: translateY(-1px);
+  background: rgba(124,255,208,.06);
+  border-color: rgba(124,255,208,.45);
+  filter:
+    drop-shadow(1px 0 0 rgba(124,255,208,.55))
+    drop-shadow(-1px 0 0 rgba(255,79,216,.45));
+}
   </style>
 </head>
 
@@ -1035,7 +1347,7 @@ pointer-events:none;
         </section>
 
         <div class="col">
-          <section class="card">
+          <section class="card card-bio">
             <div class="inner">
               <h2>Bio</h2>
               <p class="muted bio-text">
@@ -1047,16 +1359,16 @@ pointer-events:none;
               <div class="cta">
                 <strong>COSA CERCHIAMO</strong>
                 <div class="muted">
-                  Cerchiamo collaboratori di ogni tipo: locali dove suonare, servizi booking, ed etichette discografiche.
+                  un'agenzia di booking che ci faccia suonare fuori da Roma
                 </div>
-                <a href="#contact" aria-label="Jump to contact section">CONTATTACI →</a>
+                <a href="#" id="openContact">CONTATTACI →</a>
               </div>
             </div>
           </section>
 
-          <section class="card">
+          <section class="card card-releases">
             <div class="inner">
-              <h2>Prossime uscite</h2>
+              <h2>Ultime uscite</h2>
               <div class="ep-stack">
 
                 <div class="ep">
@@ -1066,7 +1378,7 @@ pointer-events:none;
 
                   <div class="ep-text">
                     <div class="muted" style="font-style:italic;">
-                      20 Marzo 2026 — il prossimo singolo
+                      20 Marzo 2026 — l'ultimo singolo
                     </div>
 
                     <div style="font-weight:900; margin-top:6px;">
@@ -1086,14 +1398,14 @@ pointer-events:none;
 
                   <div class="ep-text">
                     <div class="muted" style="font-style:italic;">
-                      18 Aprile 2026 — il nostro primo EP
+                      10 Aprile 2026 — il nostro primo EP
                     </div>
 
                     <div style="font-weight:900; margin-top:6px;">
                       Esattamente bene così
                     </div>
 
-                    <a href="https://open.spotify.com/album/42rUJO7bwc7HNg5FYNZyBk" target="_blank" rel="noopener">
+                    <a href="https://distrokid.com/hyperfollow/vertebra2/esattamente-bene-cos" target="_blank" rel="noopener">
                       Ascolta su Spotify →
                     </a>
                   </div>
@@ -1103,7 +1415,7 @@ pointer-events:none;
             </div>
           </section>
 
-<section class="card">
+<section class="card card-write">
   <div class="inner">
     <h2>SCRIVI</h2>
 
@@ -1123,47 +1435,57 @@ pointer-events:none;
 
 
         <div class="col">
-          <section class="card">
+          <section class="card card-band">
             <div class="inner">
               <h2>Band</h2>
 
-              <div class="photo" aria-label="Band photo">
-                <img src="Couch sip.jpeg" alt="Vertebra band photo" class="photo-img clickable-cover">
-              </div>
+              <div class="photo photo-hover-gif">
+  <div class="photo-inner">
+    <img
+      src="Couch sip.jpeg"
+      class="photo-img clickable-cover"
+      data-modal-src="Couch Sip Gif.gif"
+    >
+    <img
+      src="Couch Sip Gif.gif"
+      class="photo-hover-overlay"
+    >
+  </div>
+</div>
 
               <div class="slideshow" aria-label="Photo slideshow">
                 <h2 style="margin-top:0;">Foto</h2>
 
                 <div class="slide-stage" id="slideStage">
                   <div class="slide active">
-                    <img src="Live 1.JPG" alt="Live photo 1" class="slide-img clickable-cover">
+                    <img src="Live 1.JPG" alt="Live photo 1" class="slide-img clickable-cover gallery-image">
                   </div>
                   <div class="slide">
-                    <img src="Blurry couch.jpeg" alt="Studio photo 1" class="slide-img clickable-cover">
+                    <img src="Blurry couch.jpeg" alt="Studio photo 1" class="slide-img clickable-cover gallery-image">
                   </div>
                   <div class="slide">
-                    <img src="Live 2.JPG" alt="Live photo 2" class="slide-img clickable-cover">
+                    <img src="Live 2.JPG" alt="Live photo 2" class="slide-img clickable-cover gallery-image">
                   </div>
                   <div class="slide">
-                    <img src="Grass couch.jpeg" alt="Studio photo 2" class="slide-img clickable-cover">
+                    <img src="Grass couch.jpeg" alt="Studio photo 2" class="slide-img clickable-cover gallery-image">
                   </div>
 		  <div class="slide">
-  		    <img src="Live 6.jpg" alt="Live photo 3" class="slide-img top clickable-cover">
+  		    <img src="Live 6.jpg" alt="Live photo 3" class="slide-img top clickable-cover gallery-image">
 		   </div>
 		  <div class="slide">
-  		    <img src="Studio 4.jpeg" alt="Studio photo 3" class="slide-img clickable-cover">
+  		    <img src="Studio 4.jpeg" alt="Studio photo 3" class="slide-img clickable-cover gallery-image">
 		   </div>
 		  <div class="slide">
-  		    <img src="Live 3.JPG" alt="Live photo 4" class="slide-img clickable-cover">
+  		    <img src="Live 3.JPG" alt="Live photo 4" class="slide-img clickable-cover gallery-image">
 		   </div>
 		  <div class="slide">
-  		    <img src="Live 4.jpg" alt="Live photo 5" class="slide-img top clickable-cover">
+  		    <img src="Live 4.jpg" alt="Live photo 5" class="slide-img top clickable-cover gallery-image">
 		   </div>
 		  <div class="slide">
-  		    <img src="Studio 5.JPG" alt="Studio photo 4" class="slide-img clickable-cover">
+  		    <img src="Studio 5.JPG" alt="Studio photo 4" class="slide-img clickable-cover gallery-image">
 		   </div>
 		  <div class="slide">
-  		    <img src="Live 5.JPG" alt="Live photo 6" class="slide-img clickable-cover">
+  		    <img src="Live 5.JPG" alt="Live photo 6" class="slide-img clickable-cover gallery-image">
 		   </div>
                 </div>
 
@@ -1176,7 +1498,7 @@ pointer-events:none;
             </div>
           </section>
 
-          <section class="card">
+          <section class="card card-spotify">
             <div class="inner">
               <h2>Spotify</h2>
 
@@ -1203,7 +1525,7 @@ pointer-events:none;
             <img src="IconSpotify.png" alt="Spotify" class="icon-spotify">
           </a>
 
-          <a href="mailto:vertebra.contact@gmail.com" aria-label="Email">
+          <a href="#" id="openContactFooter" aria-label="Email">
             <img src="IconEmail.png" alt="Email" class="icon-email">
           </a>
         </div>
@@ -1326,55 +1648,163 @@ startSlideInterval();
   </script>
 
   <div id="imageModal" class="image-modal">
-    <button id="closeModal" class="image-modal-close" aria-label="Chiudi">×</button>
-    <img id="modalImage" class="image-modal-content" src="" alt="">
-  </div>
+  <button id="closeModal" class="image-modal-close" aria-label="Chiudi">×</button>
+
+  <button id="modalPrev" class="image-modal-nav image-modal-prev" aria-label="Previous image"><span>←</span></button>
+  <img id="modalImage" class="image-modal-content" src="" alt="">
+  <button id="modalNext" class="image-modal-nav image-modal-next" aria-label="Next image"><span>→</span></button>
+</div>
 
   <script>
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const closeModal = document.getElementById('closeModal');
-    const covers = document.querySelectorAll('.clickable-cover');
+  const modal = document.getElementById('imageModal');
+  const modalImage = document.getElementById('modalImage');
+  const closeModal = document.getElementById('closeModal');
+  const modalPrev = document.getElementById('modalPrev');
+  const modalNext = document.getElementById('modalNext');
 
-covers.forEach(img => {
-  img.addEventListener('click', (e) => {
-    modalImage.src = e.target.src;
-    modalImage.alt = e.target.alt;
+  const covers = document.querySelectorAll('.clickable-cover');
+  const galleryImages = Array.from(document.querySelectorAll('.gallery-image'));
+
+  let currentGalleryIndex = -1;
+  let galleryMode = false;
+
+  function openModalImage(src, alt){
+  modalImage.src = src;
+  modalImage.alt = alt;
+
+  modal.classList.add('open');
+
+  modalPrev.classList.remove('show');
+  modalNext.classList.remove('show');
+
+    slideshowPaused = true;
+    stopSlideInterval();
+  }
+
+  function closeModalImage(){
+    modal.classList.remove('open');
+    modalImage.src = '';
+    modalImage.alt = '';
+    galleryMode = false;
+    currentGalleryIndex = -1;
+    modalPrev.classList.remove('show');
+    modalNext.classList.remove('show');
+
+    slideshowPaused = false;
+    startSlideInterval();
+  }
+
+  function updateGalleryModal(){
+  if(currentGalleryIndex < 0 || currentGalleryIndex >= galleryImages.length) return;
+
+  const img = galleryImages[currentGalleryIndex];
+  modalImage.src = img.dataset.modalSrc || img.src;
+  modalImage.alt = img.alt;
+
+  modalPrev.classList.add('show');
+  modalNext.classList.add('show');
+}
+
+  function openGalleryAt(index){
+    currentGalleryIndex = index;
+    galleryMode = true;
+    updateGalleryModal();
     modal.classList.add('open');
 
     slideshowPaused = true;
     stopSlideInterval();
+  }
+
+  function showPrevGalleryImage(){
+    if(!galleryMode) return;
+    currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+    updateGalleryModal();
+  }
+
+  function showNextGalleryImage(){
+    if(!galleryMode) return;
+    currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
+    updateGalleryModal();
+  }
+
+  covers.forEach(img => {
+  img.addEventListener('click', (e) => {
+    const clickedImg = e.currentTarget;
+    const galleryIndex = galleryImages.indexOf(clickedImg);
+
+    if(galleryIndex !== -1){
+      openGalleryAt(galleryIndex);
+    } else {
+      galleryMode = false;
+      currentGalleryIndex = -1;
+      modalPrev.classList.remove('show');
+      modalNext.classList.remove('show');
+
+      const modalSrc = clickedImg.dataset.modalSrc || clickedImg.src;
+      openModalImage(modalSrc, clickedImg.alt);
+    }
   });
 });
 
-closeModal.addEventListener('click', () => {
-  modal.classList.remove('open');
-  modalImage.src = '';
+  modalPrev.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showPrevGalleryImage();
+  });
 
-  slideshowPaused = false;
-  startSlideInterval();
-});
+  modalNext.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showNextGalleryImage();
+  });
 
-    modal.addEventListener('click', (e) => {
-  if (e.target === modal) {
-    modal.classList.remove('open');
-    modalImage.src = '';
+  closeModal.addEventListener('click', () => {
+    closeModalImage();
+  });
 
-    slideshowPaused = false;
-    startSlideInterval();
-  }
-});
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModalImage();
+    }
+  });
 
-    document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && modal.classList.contains('open')) {
-    modal.classList.remove('open');
-    modalImage.src = '';
+  document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('open')) return;
 
-    slideshowPaused = false;
-    startSlideInterval();
-  }
-});
-  </script>
+    if (e.key === 'Escape') {
+      closeModalImage();
+    }
+
+    if (galleryMode && e.key === 'ArrowLeft') {
+      showPrevGalleryImage();
+    }
+
+    if (galleryMode && e.key === 'ArrowRight') {
+      showNextGalleryImage();
+    }
+  });
+
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  modalImage.addEventListener('touchstart', (e) => {
+    if(!galleryMode) return;
+    touchStartX = e.changedTouches[0].clientX;
+  }, { passive: true });
+
+  modalImage.addEventListener('touchend', (e) => {
+    if(!galleryMode) return;
+
+    touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchEndX - touchStartX;
+
+    if(Math.abs(deltaX) < 40) return;
+
+    if(deltaX > 0){
+      showPrevGalleryImage();
+    } else {
+      showNextGalleryImage();
+    }
+  }, { passive: true });
+</script>
 
   <script>
     const area = document.getElementById("cdArea");
@@ -1817,6 +2247,95 @@ closeModal.addEventListener('click', () => {
   });
 
   updateLyricsFlip();
+</script>
+
+<script>
+  const preloadImages = [
+    "Couch Sip Gif.gif",
+    "cd-player-loaded-ben-oltre-trans.png",
+    "cd-player-loaded-quel-momento-che-trans.png",
+    "cd-player-loaded-tutta-questa-fretta-trans.png",
+    "cd-player-closed-trans.png"
+  ];
+
+  preloadImages.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+</script>
+
+<div id="contactModal" class="contact-modal">
+  <div class="contact-box">
+
+    <button id="closeContact" class="contact-close">×</button>
+
+    <h2>Contattaci</h2>
+
+    <form action="https://formspree.io/f/maqlngpv" method="POST">
+  
+  <input type="text" name="name" placeholder="Nome" required>
+  
+  <input type="email" name="email" placeholder="Email" required>
+  
+  <textarea name="message" placeholder="Messaggio" required></textarea>
+
+  <!-- NEW: copy email section -->
+  <button type="submit">Invia</button>
+
+<div class="contact-alt-label">...oppure contattaci direttamente</div>
+
+<div class="contact-alt">
+  <span class="contact-email">vertebra.contact@gmail.com</span>
+  
+  <button type="button" id="copyEmailBtn" class="copy-email">
+    Copia
+  </button>
+</div>
+
+</form>
+
+  </div>
+</div>
+
+<script>
+const contactModal = document.getElementById('contactModal');
+[openContact, openContactFooter].forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    contactModal.classList.add('open');
+  });
+});
+const closeContact = document.getElementById('closeContact');
+
+openContact.addEventListener('click', (e) => {
+  e.preventDefault();
+  contactModal.classList.add('open');
+});
+
+closeContact.addEventListener('click', () => {
+  contactModal.classList.remove('open');
+});
+
+contactModal.addEventListener('click', (e) => {
+  if(e.target === contactModal){
+    contactModal.classList.remove('open');
+  }
+});
+
+const copyEmailBtn = document.getElementById('copyEmailBtn');
+
+copyEmailBtn.addEventListener('click', () => {
+  const email = "vertebra.contact@gmail.com";
+
+  navigator.clipboard.writeText(email).then(() => {
+    copyEmailBtn.textContent = "Copiata!";
+
+    setTimeout(() => {
+      copyEmailBtn.textContent = "Copia";
+    }, 1500);
+  });
+});
+
 </script>
 
 </body>
