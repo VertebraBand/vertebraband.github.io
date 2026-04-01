@@ -87,12 +87,15 @@
     .page.active{ display:block; }
 
     #page1{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: clamp(18px, 3vw, 40px);
-      background:#000;
-    }
+  align-items:center;
+  justify-content:center;
+  padding: clamp(18px, 3vw, 40px);
+  background:#000;
+}
+
+#page1.active{
+  display:flex;
+}
 
     .splash-wrap{
       width:min(980px, 100%);
@@ -165,14 +168,15 @@
     }
 
     .hud{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding-top: 14px;
-      color:var(--muted);
-      font-size:14px;
-    }
+  display:grid;
+  grid-template-columns: 1fr auto;
+  align-items:center;
+  column-gap:14px;
+  row-gap:10px;
+  padding-top: 14px;
+  color:var(--muted);
+  font-size:14px;
+}
     .progress{
       flex:1;
       height: 10px;
@@ -196,6 +200,27 @@
       font-family: "Courier New", Courier, monospace;
     }
 
+.enter-hint{
+  display:block;
+  visibility:hidden;
+  opacity:0;
+  height:18px;
+  grid-column: 1 / -1;
+  text-align:center;
+  color:#fff;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  transition: opacity .2s ease;
+}
+
+.enter-hint.show{
+  visibility:visible;
+  opacity:1;
+}
+
     #page2{
       padding: clamp(18px, 3vw, 42px);
     }
@@ -208,33 +233,41 @@
     }
 
     .banner{
-      position: relative;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 16px 18px;
-      border-radius: var(--radius);
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
-      box-shadow: 0 12px 34px rgba(0,0,0,.5);
-      backdrop-filter: blur(8px);
-    }
+  position: relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 20px 18px;
+  border-radius: var(--radius);
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  box-shadow: 0 12px 34px rgba(0,0,0,.5);
+  backdrop-filter: blur(8px);
+  text-align:center;
+}
 
     .logo{
-      height:80px;
-      width:100%;
-      display:flex;
-      align-items:center;
-      overflow:hidden;
-    }
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto;
+}
     .logo-img{
-      max-height:100%;
-      max-width:100%;
-      width:auto;
-      height:auto;
-      object-fit:contain;
-      filter:none;
-    }
+  display:block;
+  width:min(100%, 300px);
+  max-width:100%;
+  height:auto;
+  object-fit:contain;
+  filter:none;
+}
+
+.banner-center{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
 
     .tag{
       color: rgba(255,255,255,.7);
@@ -704,6 +737,125 @@ pointer-events:none;
 }
 
 @media (max-width: 900px){
+  #page1{
+  align-items:center;
+  justify-content:center;
+  padding: 0 4px;
+}
+
+#page1.active{
+  display:flex;
+}
+
+  .splash-wrap{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+
+  .tv-stage{
+  width: 100vw;
+  max-width: 100vw;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.tv-stage{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+  .tv-stage::before{
+    display:none;
+  }
+
+  .tv{
+  width:100%;
+  padding: 8px 6px 10px;
+  border-radius: 24px;
+}
+
+.tv-static{
+    transform: scale(1.48);
+    transform-origin: center center;
+  }
+
+  .tv-mid{
+  position:absolute;
+  width:58%;
+  height:58%;
+  left:49.5%;
+  top:46%;
+  transform: translate(-50%, -50%) scale(1.44);
+  transform-origin: center center;
+  object-fit: contain;
+  pointer-events:none;
+  clip-path: inset(0 17% 0 17%);
+}
+
+  .tv-frame{
+  padding: 10px 8px 14px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+  .screen{
+  width: 100%;
+  aspect-ratio: 1.2 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.screen{
+    overflow: hidden;
+  }
+
+
+  .hud{
+  width: 96%;
+  margin: 14px auto 0;
+  display:grid;
+  grid-template-columns: 1fr auto;
+  align-items:center;
+  column-gap: 12px;
+  row-gap: 10px;
+  padding-top: 0;
+}
+
+  .progress{
+    height: 12px;
+  }
+
+  .pct{
+    min-width: 50px;
+    text-align:right;
+    font-size: 15px;
+  }
+
+  .enter-hint{
+  display:block;
+  visibility:hidden;
+  opacity:0;
+  height:18px;
+  grid-column: 1 / -1;
+  text-align:center;
+  color:#fff;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  transition: opacity .2s ease;
+}
+
+}
+
+@media (max-width: 900px){
   .image-modal-nav,
   .image-modal-nav.show{
     display:none !important;
@@ -743,6 +895,60 @@ pointer-events:none;
       width:300px;
       height:240px;
     }
+
+#lidCue{
+  position:absolute;
+  left:10px;
+  top:10px;
+  width:240px;
+  height:98px;
+
+  border-radius:50%; /* ← key fix */
+
+  pointer-events:none;
+  z-index:4;
+
+  opacity:0;
+  transform: scale(.98);
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(124,255,208,.28) 0%,
+      rgba(124,255,208,.18) 35%,
+      rgba(124,255,208,.08) 60%,
+      rgba(124,255,208,0) 80%
+    );
+
+  border: 1px solid rgba(124,255,208,.28);
+
+  box-shadow:
+    0 0 18px rgba(124,255,208,.18),
+    inset 0 0 18px rgba(124,255,208,.08);
+
+  transition: opacity .18s ease, transform .18s ease;
+}
+#lidCue.show{
+  opacity:1;
+  animation: lidCuePulse 1.15s ease-in-out infinite;
+}
+
+@keyframes lidCuePulse{
+  0%, 100%{
+    opacity:.28;
+    transform: scale(.98);
+    box-shadow:
+      0 0 12px rgba(124,255,208,.14),
+      inset 0 0 14px rgba(124,255,208,.06);
+  }
+  50%{
+    opacity:.82;
+    transform: scale(1.02);
+    box-shadow:
+      0 0 28px rgba(124,255,208,.34),
+      inset 0 0 22px rgba(124,255,208,.14);
+  }
+}
 
     #lidZone{
       position:absolute;
@@ -942,7 +1148,26 @@ pointer-events:none;
     #disc-fretta{ right:65px; top:190px; }
 
     @media (max-width: 900px){
-      .grid{
+     
+.ep a{
+    font-size: 13px;
+    padding: 7px 12px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    width: fit-content;
+    margin-top: 8px;
+
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.25);
+  }
+
+.ep a{
+    margin-left: -10px;
+  }
+
+
+.grid{
   display:flex;
   flex-direction:column;
   gap:18px;
@@ -1049,6 +1274,15 @@ pointer-events:none;
   right:auto;
   top:230px;                      /* more up */
   transform:translateX(-57px);    /* keep centered */
+}
+
+#lidCue{
+  left: 50% !important;
+  top: 8px !important;
+  width: 150px;
+  height: 56px;
+
+  transform: translateX(-48%) scale(.98) !important;
 }
 
       #lidZone{
@@ -1267,11 +1501,12 @@ pointer-events:none;
             </div>
 
             <div class="hud" aria-label="Loading progress">
-              <div class="progress" aria-hidden="true">
-                <div class="bar" id="bar"></div>
-              </div>
-              <div class="pct" id="pct">0%</div>
-            </div>
+  <div class="progress" aria-hidden="true">
+    <div class="bar" id="bar"></div>
+  </div>
+  <div class="pct" id="pct">0%</div>
+  <div class="enter-hint" id="enterHint"></div>
+</div>
           </div>
         </div>
       </div>
@@ -1287,7 +1522,7 @@ pointer-events:none;
           <div class="logo">
             <img src="Vertebra Logo.png" alt="Vertebra logo" class="logo-img">
           </div>
-          <div class="tag">Alternative Rock • Roma • dal 2022</div>
+          <div class="tag">Alternative Rock | Roma | dal 2022</div>
         </div>
       </header>
 
@@ -1300,15 +1535,16 @@ pointer-events:none;
 
             <div id="cdArea" class="cd-area">
               <div class="cd-player">
-                <img id="playerImage"
-                  src="cd-player-open-trans.png"
-                  class="player-img">
+  <img id="playerImage"
+    src="cd-player-open-trans.png"
+    class="player-img">
 
-                <div id="trayZone"></div>
-                <div id="lidZone"></div>
-                <div id="discZone"></div>
-                <div id="closedZone"></div>
-              </div>
+  <div id="trayZone"></div>
+  <div id="lidCue" aria-hidden="true"></div>
+  <div id="lidZone"></div>
+  <div id="discZone"></div>
+  <div id="closedZone"></div>
+</div>
 
               <img src="cd-ben-oltre-disc-trans.png"
                 class="disc"
@@ -1353,7 +1589,7 @@ pointer-events:none;
               <p class="muted bio-text">
                 <span class="glitch" data-text="parole tristi in canzoni distorte">parole tristi in canzoni distorte</span>
                 <br/><br/>
-                siamo i Vertebra - alternative rock romano dal 2022<br>vogliamo suonare nella vostra città - siete pronti?
+                siamo i Vertebra - alternative rock romano dal 2022<br>scriviamo quello che non riusciamo a dire<br>portiamo live quello che teniamo dentro
               </p>
 
               <div class="cta">
@@ -1542,10 +1778,14 @@ pointer-events:none;
     const page2 = document.getElementById('page2');
 
     const tvButton = document.getElementById('tvButton');
-    const pctEl = document.getElementById('pct');
-    const barEl = document.getElementById('bar');
-    const tvStatic = document.getElementById('tvStatic');
-
+const pctEl = document.getElementById('pct');
+const barEl = document.getElementById('bar');
+const tvStatic = document.getElementById('tvStatic');
+const enterHint = document.getElementById('enterHint');
+const splashIsMobile = window.matchMedia("(max-width: 900px)").matches;
+if (enterHint) {
+  enterHint.textContent = splashIsMobile ? "TAP TO ENTER" : "CLICK TO ENTER";
+}
     let pct = 0;
     let loaded = false;
 
@@ -1567,12 +1807,14 @@ pointer-events:none;
       setStaticIntensity(intensity);
 
       if(pct >= 100){
-        loaded = true;
-        setStaticIntensity(0);
-      }
+  loaded = true;
+  setStaticIntensity(0);
+  if (enterHint) enterHint.classList.add('show');
+}
     }
 
     setStaticIntensity(1);
+if (enterHint) enterHint.classList.remove('show');
 
     const loadingInterval = setInterval(() => {
       tickLoading();
@@ -1580,16 +1822,20 @@ pointer-events:none;
     }, 60);
 
     function enterSite(){
-      page1.classList.remove('active');
-      page2.classList.add('active');
-      setStaticIntensity(0);
-      page2.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  page1.classList.remove('active');
+  page2.classList.add('active');
+  setStaticIntensity(0);
+
+  window.scrollTo(0, 0); // ensures you're at the top, no animation
+}
 
     tvButton.addEventListener('click', enterSite);
     tvButton.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' ') enterSite();
-    });
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault(); // prevents page scroll on space
+    enterSite();
+  }
+});
 
     const slides = Array.from(document.querySelectorAll('.slide-stage .slide'));
     const slideLabel = document.getElementById('slideLabel');
@@ -1740,8 +1986,9 @@ startSlideInterval();
       modalPrev.classList.remove('show');
       modalNext.classList.remove('show');
 
-      const modalSrc = clickedImg.dataset.modalSrc || clickedImg.src;
-      openModalImage(modalSrc, clickedImg.alt);
+      const mobilePhotoMode = window.matchMedia("(max-width: 900px)").matches;
+const modalSrc = mobilePhotoMode ? clickedImg.src : (clickedImg.dataset.modalSrc || clickedImg.src);
+openModalImage(modalSrc, clickedImg.alt);
     }
   });
 });
@@ -1808,10 +2055,11 @@ startSlideInterval();
 
   <script>
     const area = document.getElementById("cdArea");
-    const player = document.getElementById("playerImage");
-    const lid = document.getElementById("lidZone");
-    const discZone = document.getElementById("discZone");
-    const closedZone = document.getElementById("closedZone");
+const player = document.getElementById("playerImage");
+const lid = document.getElementById("lidZone");
+const lidCue = document.getElementById("lidCue");
+const discZone = document.getElementById("discZone");
+const closedZone = document.getElementById("closedZone");
 
     const isMobile = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
 
@@ -1825,7 +2073,10 @@ startSlideInterval();
     const savedPositions = {};
 
     let state = "open-empty";
-    let loadedTrack = null;
+let loadedTrack = null;
+
+let lidCueTimer = null;
+let prevState = null;
 
     const playerImages = {
       open:"cd-player-open-trans.png",
@@ -1842,6 +2093,7 @@ startSlideInterval();
     };
 
     function updatePlayerZones(){
+updateLidCue();
       if(state === "open-empty"){
         lid.style.display = "none";
         discZone.style.display = "block";
@@ -1862,6 +2114,27 @@ startSlideInterval();
         closedZone.style.display = "block";
       }
     }
+
+function updateLidCue(){
+  if(!lidCue) return;
+
+  if(lidCueTimer){
+    clearTimeout(lidCueTimer);
+    lidCueTimer = null;
+  }
+
+  lidCue.classList.remove("show");
+
+  if(state === "loaded" && prevState === "open-empty"){
+  const cueDelay = isMobile ? 0 : 1200;
+
+  lidCueTimer = setTimeout(() => {
+    if(state === "loaded"){
+      lidCue.classList.add("show");
+    }
+  }, cueDelay);
+}
+}
 
     function saveDiscPosition(disc){
       savedPositions[disc.id] = {
@@ -1966,13 +2239,14 @@ startSlideInterval();
       a.addEventListener("loadedmetadata", updateNowBar);
       a.addEventListener("timeupdate", updateNowBar);
       a.addEventListener("ended", () => {
-        state = "loaded";
-        a.pause();
-        a.currentTime = 0;
-        player.src = playerImages[loadedTrack];
-        updatePlayerZones();
-        updateNowBar();
-      });
+  prevState = state;
+  state = "loaded";
+  a.pause();
+  a.currentTime = 0;
+  player.src = playerImages[loadedTrack];
+  updatePlayerZones();
+  updateNowBar();
+});
     });
 
     cdNowSeek.addEventListener("input", () => {
@@ -1994,6 +2268,7 @@ startSlideInterval();
           const track = disc.dataset.track;
           disc.style.display = "none";
           loadedTrack = track;
+          prevState = state;
           state = "loaded";
 
           audio[track].currentTime = 0;
@@ -2059,7 +2334,8 @@ startSlideInterval();
         const track = disc.dataset.track;
         disc.style.display = "none";
         loadedTrack = track;
-        state = "loaded";
+	prevState = state;
+	state = "loaded";
 
         audio[track].currentTime = 0;
         player.src = playerImages[track];
@@ -2133,18 +2409,19 @@ startSlideInterval();
   if(!insideDiscZone) return "none";
 
   if(state === "open-empty"){
-    const track = disc.dataset.track;
+  const track = disc.dataset.track;
 
-    disc.style.display = "none";
-    loadedTrack = track;
-    state = "loaded";
+  disc.style.display = "none";
+  loadedTrack = track;
+  prevState = state;
+  state = "loaded";
 
-    audio[track].currentTime = 0;
-    player.src = playerImages[track];
-    updatePlayerZones();
-    updateNowBar();
-    return "loaded";
-  }
+  audio[track].currentTime = 0;
+  player.src = playerImages[track];
+  updatePlayerZones();
+  updateNowBar();
+  return "loaded";
+}
 
   if(state === "loaded"){
     return "rejected";
@@ -2154,59 +2431,60 @@ startSlideInterval();
 }
 
     lid.onclick = (e) => {
-      e.stopPropagation();
+  e.stopPropagation();
 
-      if(state !== "loaded") return;
+  if(state !== "loaded") return;
 
-      player.src = playerImages.closed;
-      audio[loadedTrack].play();
-      state = "closed";
-      updatePlayerZones();
-      updateNowBar();
-    };
+  player.src = playerImages.closed;
+  audio[loadedTrack].play();
+  prevState = state;
+  state = "closed";
+  updatePlayerZones();
+  updateNowBar();
+};
 
     closedZone.onclick = (e) => {
-      e.stopPropagation();
+  e.stopPropagation();
 
-      if(state !== "closed") return;
+  if(state !== "closed") return;
 
-      audio[loadedTrack].pause();
-      audio[loadedTrack].currentTime = 0;
-      player.src = playerImages[loadedTrack];
-      state = "loaded";
-      updatePlayerZones();
-      updateNowBar();
-    };
+  audio[loadedTrack].pause();
+  audio[loadedTrack].currentTime = 0;
+  player.src = playerImages[loadedTrack];
+  prevState = state;
+  state = "loaded";
+  updatePlayerZones();
+  updateNowBar();
+};
 
     discZone.onclick = (e) => {
-      e.stopPropagation();
+  e.stopPropagation();
 
-      if(state !== "loaded") return;
+  if(state !== "loaded") return;
 
-      const disc = document.querySelector(`[data-track="${loadedTrack}"]`);
+  const disc = document.querySelector(`[data-track="${loadedTrack}"]`);
 
-      disc.style.display = "block";
-      disc.style.left = "";
-      disc.style.top = "";
-      saveDiscPosition(disc);
+  disc.style.display = "block";
+  disc.style.left = "";
+  disc.style.top = "";
+  saveDiscPosition(disc);
 
-      audio.benoltre.pause();
-      audio.benoltre.currentTime = 0;
-      audio.quel.pause();
-      audio.quel.currentTime = 0;
-      audio.fretta.pause();
-      audio.fretta.currentTime = 0;
+  audio.benoltre.pause();
+  audio.benoltre.currentTime = 0;
+  audio.quel.pause();
+  audio.quel.currentTime = 0;
+  audio.fretta.pause();
+  audio.fretta.currentTime = 0;
 
-      player.src = playerImages.open;
-      loadedTrack = null;
-      state = "open-empty";
-      updatePlayerZones();
-      updateNowBar();
-    };
+  player.src = playerImages.open;
+  loadedTrack = null;
+  prevState = state;
+  state = "open-empty";
+  updatePlayerZones();
+  updateNowBar();
+};
 
-    updatePlayerZones();
-    updateNowBar();
-  </script>
+</script>
 
 <script>
   const lyricsFlipImage = document.getElementById('lyricsFlipImage');
@@ -2255,7 +2533,30 @@ startSlideInterval();
     "cd-player-loaded-ben-oltre-trans.png",
     "cd-player-loaded-quel-momento-che-trans.png",
     "cd-player-loaded-tutta-questa-fretta-trans.png",
-    "cd-player-closed-trans.png"
+    "cd-player-closed-trans.png",
+    "Live 1.JPG",
+    "Blurry couch.jpeg",
+    "Live 2.JPG",
+    "Grass couch.jpeg",
+    "Live 6.jpg",
+    "Studio 4.jpeg",
+    "Live 3.JPG",
+    "Live 4.jpg",
+    "Studio 5.JPG",
+    "Live 5.JPG",
+    "Notebook1.png",
+    "Notebook2.png",
+    "Notebook3.png",
+    "Notebook4.png",
+    "Notebook5.png",
+    "Notebook6.png",
+    "Notebook7.png",
+    "Notebook8.png",
+    "Notebook9.png",
+    "Notebook10.png",
+    "Notebook11.png",
+    "Notebook12.png",
+    "WandaLeft.JPG"
   ];
 
   preloadImages.forEach(src => {
@@ -2267,7 +2568,7 @@ startSlideInterval();
 <div id="contactModal" class="contact-modal">
   <div class="contact-box">
 
-    <button id="closeContact" class="contact-close">×</button>
+    <button id="closeContact" class="contact-close" type="button" aria-label="Chiudi">×</button>
 
     <h2>Contattaci</h2>
 
@@ -2299,43 +2600,74 @@ startSlideInterval();
 
 <script>
 const contactModal = document.getElementById('contactModal');
+const openContact = document.getElementById('openContact');
+const openContactFooter = document.getElementById('openContactFooter');
+const closeContact = document.getElementById('closeContact');
+const copyEmailBtn = document.getElementById('copyEmailBtn');
+
+function openContactModal() {
+  contactModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeContactModal() {
+  contactModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 [openContact, openContactFooter].forEach(btn => {
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    contactModal.classList.add('open');
+    openContactModal();
   });
 });
-const closeContact = document.getElementById('closeContact');
 
-openContact.addEventListener('click', (e) => {
-  e.preventDefault();
-  contactModal.classList.add('open');
-});
-
-closeContact.addEventListener('click', () => {
-  contactModal.classList.remove('open');
-});
+closeContact.addEventListener('click', closeContactModal);
 
 contactModal.addEventListener('click', (e) => {
-  if(e.target === contactModal){
-    contactModal.classList.remove('open');
+  if (e.target === contactModal) {
+    closeContactModal();
   }
 });
 
-const copyEmailBtn = document.getElementById('copyEmailBtn');
-
-copyEmailBtn.addEventListener('click', () => {
-  const email = "vertebra.contact@gmail.com";
-
-  navigator.clipboard.writeText(email).then(() => {
-    copyEmailBtn.textContent = "Copiata!";
-
-    setTimeout(() => {
-      copyEmailBtn.textContent = "Copia";
-    }, 1500);
-  });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && contactModal.classList.contains('open')) {
+    closeContactModal();
+  }
 });
 
+copyEmailBtn.addEventListener('click', async () => {
+  const email = 'vertebra.contact@gmail.com';
+
+  try {
+    await navigator.clipboard.writeText(email);
+    copyEmailBtn.textContent = 'Copiata!';
+    setTimeout(() => {
+      copyEmailBtn.textContent = 'Copia';
+    }, 1500);
+  } catch {
+    copyEmailBtn.textContent = 'Errore';
+    setTimeout(() => {
+      copyEmailBtn.textContent = 'Copia';
+    }, 1500);
+  }
+});
+</script>
+
+<script>
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    const bandPhoto = document.querySelector('.photo-hover-gif .photo-img');
+    const bandOverlay = document.querySelector('.photo-hover-gif .photo-hover-overlay');
+
+    if (bandPhoto) {
+      bandPhoto.src = "WandaLeft.JPG";
+      bandPhoto.setAttribute("data-modal-src", "WandaLeft.JPG");
+    }
+
+    if (bandOverlay) {
+      bandOverlay.style.display = "none";
+    }
+  }
 </script>
 
 </body>
